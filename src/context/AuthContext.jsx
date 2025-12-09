@@ -108,6 +108,26 @@ export const AuthProvider = ({ children }) => {
 
       const provider = new GoogleAuthProvider();
       const userCredential = await signInWithPopup(auth, provider);
+      
+      // Check if this is a new user (first time signing in with Google)
+      const isNewUser = userCredential.user.metadata.creationTime === userCredential.user.metadata.lastSignInTime;
+      
+      // If new user, register in backend
+      if (isNewUser) {
+        try {
+          await put("/users/profile", {
+            name: userCredential.user.displayName,
+            email: userCredential.user.email,
+            photoURL: userCredential.user.photoURL,
+          });
+        } catch (error) {
+          // Silently handle backend registration error
+          // User is already created in Firebase
+          if (import.meta.env.DEV) {
+            console.error("Error registering Google user in backend:", error);
+          }
+        }
+      }
 
       return userCredential.user;
     } catch (error) {
