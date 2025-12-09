@@ -1,12 +1,10 @@
 import { Outlet } from "react-router-dom";
+import Navbar from "../components/Navbar";
 
 const MainLayout = () => {
   return (
     <div className="min-h-screen">
-      {/* Navbar will go here */}
-      <nav className="bg-base-200 p-4">
-        <h1 className="text-2xl font-bold">BookCourier - Main Layout</h1>
-      </nav>
+      <Navbar />
 
       {/* Main content */}
       <main>
