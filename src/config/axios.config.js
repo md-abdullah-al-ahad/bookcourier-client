@@ -1,13 +1,13 @@
-import axios from 'axios';
-import { auth } from './firebase.config';
+import axios from "axios";
+import { auth } from "./firebase.config";
 
 // Create axios instance with base configuration
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
   timeout: 10000,
   headers: {
-    'Content-Type': 'application/json'
-  }
+    "Content-Type": "application/json",
+  },
 });
 
 // Request interceptor - Add authentication token
@@ -23,14 +23,14 @@ api.interceptors.request.use(
       return config;
     } catch (error) {
       if (import.meta.env.DEV) {
-        console.error('❌ Error getting auth token:', error);
+        console.error("❌ Error getting auth token:", error);
       }
       return Promise.reject(error);
     }
   },
   (error) => {
     if (import.meta.env.DEV) {
-      console.error('❌ Request interceptor error:', error);
+      console.error("❌ Request interceptor error:", error);
     }
     return Promise.reject(error);
   }
@@ -46,50 +46,53 @@ api.interceptors.response.use(
     // Handle common HTTP errors
     if (error.response) {
       const { status, data } = error.response;
-      
+
       switch (status) {
         case 401:
           if (import.meta.env.DEV) {
-            console.error('❌ 401 Unauthorized - Invalid or expired token');
+            console.error("❌ 401 Unauthorized - Invalid or expired token");
           }
           // You can add logic here to redirect to login or refresh token
           break;
-        
+
         case 403:
           if (import.meta.env.DEV) {
-            console.error('❌ 403 Forbidden - Access denied');
+            console.error("❌ 403 Forbidden - Access denied");
           }
           break;
-        
+
         case 404:
           if (import.meta.env.DEV) {
-            console.error('❌ 404 Not Found - Resource not found');
+            console.error("❌ 404 Not Found - Resource not found");
           }
           break;
-        
+
         case 500:
           if (import.meta.env.DEV) {
-            console.error('❌ 500 Internal Server Error');
+            console.error("❌ 500 Internal Server Error");
           }
           break;
-        
+
         default:
           if (import.meta.env.DEV) {
-            console.error(`❌ Error ${status}:`, data?.message || error.message);
+            console.error(
+              `❌ Error ${status}:`,
+              data?.message || error.message
+            );
           }
       }
     } else if (error.request) {
       // Request was made but no response received
       if (import.meta.env.DEV) {
-        console.error('❌ No response received:', error.message);
+        console.error("❌ No response received:", error.message);
       }
     } else {
       // Something happened in setting up the request
       if (import.meta.env.DEV) {
-        console.error('❌ Request setup error:', error.message);
+        console.error("❌ Request setup error:", error.message);
       }
     }
-    
+
     return Promise.reject(error);
   }
 );
