@@ -106,10 +106,12 @@ export const AuthProvider = ({ children }) => {
 
       const provider = new GoogleAuthProvider();
       const userCredential = await signInWithPopup(auth, provider);
-      
+
       // Check if this is a new user (first time signing in with Google)
-      const isNewUser = userCredential.user.metadata.creationTime === userCredential.user.metadata.lastSignInTime;
-      
+      const isNewUser =
+        userCredential.user.metadata.creationTime ===
+        userCredential.user.metadata.lastSignInTime;
+
       // If new user, register in backend
       if (isNewUser) {
         try {
@@ -234,6 +236,9 @@ export const AuthProvider = ({ children }) => {
    */
   const fetchUserRole = async (firebaseUser) => {
     try {
+      // Force token refresh to get latest claims
+      await firebaseUser.getIdToken(true);
+
       // Fetch user data including role from MongoDB
       const userData = await get("/users/me");
 
@@ -255,6 +260,24 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  /**
+   * Refresh user data and role from backend
+   * @returns {Promise<void>}
+   */
+  const refreshUser = async () => {
+    try {
+      const currentUser = auth.currentUser;
+      if (currentUser) {
+        const userWithRole = await fetchUserRole(currentUser);
+        setUser(userWithRole);
+      }
+    } catch (error) {
+      if (import.meta.env.DEV) {
+        console.error("Error refreshing user:", error);
+      }
+    }
+  };
+
   // Monitor auth state changes
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
@@ -273,6 +296,19 @@ export const AuthProvider = ({ children }) => {
     return () => unsubscribe();
   }, []);
 
+  // Periodically refresh user data to check for role changes
+  useEffect(() => {
+    if (!user) return;
+
+    // Refresh user data every 5 minutes
+    const intervalId = setInterval(() => {
+      refreshUser();
+    }, 5 * 60 * 1000); // 5 minutes
+
+    // Cleanup interval
+    return () => clearInterval(intervalId);
+  }, [user]);
+
   const value = {
     user,
     loading,
@@ -283,6 +319,7 @@ export const AuthProvider = ({ children }) => {
     logout,
     updateUserProfile,
     resetPassword,
+    refreshUser,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

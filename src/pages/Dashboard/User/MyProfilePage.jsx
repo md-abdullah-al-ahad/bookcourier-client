@@ -14,6 +14,7 @@ import {
   Edit2,
   Check,
   X,
+  RefreshCw,
 } from "lucide-react";
 import { useAuth } from "../../../context/AuthContext";
 import { formatDate } from "../../../utils/formatters";
@@ -22,9 +23,10 @@ import { put, get } from "../../../utils/api";
 import useFetch from "../../../hooks/useFetch";
 
 const MyProfilePage = () => {
-  const { user, updateUserProfile } = useAuth();
+  const { user, updateUserProfile, refreshUser } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   // Fetch user statistics
   const { data: statsData, loading: statsLoading } = useFetch("/users/stats");
@@ -104,16 +106,44 @@ const MyProfilePage = () => {
     return `https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.email}`;
   };
 
+  // Handle refresh user data
+  const handleRefreshUser = async () => {
+    try {
+      setIsRefreshing(true);
+      await refreshUser();
+      showSuccess("Profile refreshed successfully!");
+    } catch (error) {
+      showError("Failed to refresh profile");
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
+
   return (
     <div className="animate-fade-in">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-          My Profile
-        </h1>
-        <p className="text-base-content/70">
-          Manage your account information and preferences
-        </p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              My Profile
+            </h1>
+            <p className="text-base-content/70">
+              Manage your account information and preferences
+            </p>
+          </div>
+          <button
+            onClick={handleRefreshUser}
+            disabled={isRefreshing}
+            className="btn btn-ghost gap-2"
+            title="Refresh profile data"
+          >
+            <RefreshCw
+              className={`w-5 h-5 ${isRefreshing ? "animate-spin" : ""}`}
+            />
+            {isRefreshing ? "Refreshing..." : "Refresh"}
+          </button>
+        </div>
       </div>
 
       {/* Statistics Cards */}
