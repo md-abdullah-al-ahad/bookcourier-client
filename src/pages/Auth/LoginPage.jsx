@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Eye, EyeOff, BookOpen } from 'lucide-react';
-import { useAuth } from '../../context/AuthContext';
-import { showSuccess, showError } from '../../utils/toast';
-import { validateEmail } from '../../utils/validation';
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Eye, EyeOff, BookOpen } from "lucide-react";
+import { useAuth } from "../../context/AuthContext";
+import { showSuccess, showError } from "../../utils/toast";
+import { validateEmail } from "../../utils/validation";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -13,7 +13,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const from = location.state?.from?.pathname || '/dashboard';
+  const from = location.state?.from?.pathname || "/dashboard";
 
   const {
     register,
@@ -25,10 +25,12 @@ const LoginPage = () => {
   const onSubmit = async (data) => {
     try {
       await login(data.email, data.password);
-      showSuccess('Login successful! Welcome back.');
+      showSuccess("Login successful! Welcome back.");
       navigate(from, { replace: true });
     } catch (error) {
-      showError(error.message || 'Failed to login. Please check your credentials.');
+      showError(
+        error.message || "Failed to login. Please check your credentials."
+      );
     }
   };
 
@@ -37,10 +39,10 @@ const LoginPage = () => {
     try {
       setIsGoogleLoading(true);
       await loginWithGoogle();
-      showSuccess('Login successful! Welcome back.');
+      showSuccess("Login successful! Welcome back.");
       navigate(from, { replace: true });
     } catch (error) {
-      showError(error.message || 'Failed to login with Google.');
+      showError(error.message || "Failed to login with Google.");
     } finally {
       setIsGoogleLoading(false);
     }
@@ -60,7 +62,9 @@ const LoginPage = () => {
                 </div>
               </div>
               <h1 className="text-3xl font-bold mb-2">Welcome Back</h1>
-              <p className="text-base-content/70">Login to your BookCourier account</p>
+              <p className="text-base-content/70">
+                Login to your BookCourier account
+              </p>
             </div>
 
             {/* Login Form */}
@@ -73,15 +77,21 @@ const LoginPage = () => {
                 <input
                   type="email"
                   placeholder="Enter your email"
-                  className={`input input-bordered ${errors.email ? 'input-error' : ''}`}
-                  {...register('email', {
-                    required: 'Email is required',
-                    validate: (value) => validateEmail(value) || 'Please enter a valid email address',
+                  className={`input input-bordered ${
+                    errors.email ? "input-error" : ""
+                  }`}
+                  {...register("email", {
+                    required: "Email is required",
+                    validate: (value) =>
+                      validateEmail(value) ||
+                      "Please enter a valid email address",
                   })}
                 />
                 {errors.email && (
                   <label className="label">
-                    <span className="label-text-alt text-error">{errors.email.message}</span>
+                    <span className="label-text-alt text-error">
+                      {errors.email.message}
+                    </span>
                   </label>
                 )}
               </div>
@@ -93,14 +103,16 @@ const LoginPage = () => {
                 </label>
                 <div className="relative">
                   <input
-                    type={showPassword ? 'text' : 'password'}
+                    type={showPassword ? "text" : "password"}
                     placeholder="Enter your password"
-                    className={`input input-bordered w-full pr-12 ${errors.password ? 'input-error' : ''}`}
-                    {...register('password', {
-                      required: 'Password is required',
+                    className={`input input-bordered w-full pr-12 ${
+                      errors.password ? "input-error" : ""
+                    }`}
+                    {...register("password", {
+                      required: "Password is required",
                       minLength: {
                         value: 6,
-                        message: 'Password must be at least 6 characters',
+                        message: "Password must be at least 6 characters",
                       },
                     })}
                   />
@@ -109,19 +121,28 @@ const LoginPage = () => {
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-base-content/60 hover:text-base-content"
                   >
-                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                    {showPassword ? (
+                      <EyeOff className="w-5 h-5" />
+                    ) : (
+                      <Eye className="w-5 h-5" />
+                    )}
                   </button>
                 </div>
                 {errors.password && (
                   <label className="label">
-                    <span className="label-text-alt text-error">{errors.password.message}</span>
+                    <span className="label-text-alt text-error">
+                      {errors.password.message}
+                    </span>
                   </label>
                 )}
               </div>
 
               {/* Forgot Password Link */}
               <div className="text-right">
-                <Link to="/forgot-password" className="text-sm text-primary hover:underline">
+                <Link
+                  to="/forgot-password"
+                  className="text-sm text-primary hover:underline"
+                >
                   Forgot Password?
                 </Link>
               </div>
@@ -129,10 +150,12 @@ const LoginPage = () => {
               {/* Login Button */}
               <button
                 type="submit"
-                className={`btn btn-primary btn-block ${isSubmitting ? 'loading' : ''}`}
+                className={`btn btn-primary btn-block ${
+                  isSubmitting ? "loading" : ""
+                }`}
                 disabled={isSubmitting || isGoogleLoading}
               >
-                {isSubmitting ? 'Logging in...' : 'Login'}
+                {isSubmitting ? "Logging in..." : "Login"}
               </button>
             </form>
 
@@ -143,7 +166,9 @@ const LoginPage = () => {
             <button
               type="button"
               onClick={handleGoogleLogin}
-              className={`btn btn-outline btn-block ${isGoogleLoading ? 'loading' : ''}`}
+              className={`btn btn-outline btn-block ${
+                isGoogleLoading ? "loading" : ""
+              }`}
               disabled={isSubmitting || isGoogleLoading}
             >
               {!isGoogleLoading && (
@@ -166,14 +191,17 @@ const LoginPage = () => {
                   />
                 </svg>
               )}
-              {isGoogleLoading ? 'Logging in...' : 'Login with Google'}
+              {isGoogleLoading ? "Logging in..." : "Login with Google"}
             </button>
 
             {/* Register Link */}
             <div className="text-center mt-6">
               <p className="text-sm text-base-content/70">
-                Don't have an account?{' '}
-                <Link to="/register" className="text-primary font-medium hover:underline">
+                Don't have an account?{" "}
+                <Link
+                  to="/register"
+                  className="text-primary font-medium hover:underline"
+                >
                   Register
                 </Link>
               </p>
