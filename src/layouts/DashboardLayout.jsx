@@ -1,4 +1,4 @@
-import { Outlet, NavLink, useNavigate } from 'react-router-dom';
+import { Outlet, NavLink, useNavigate } from "react-router-dom";
 import {
   ShoppingBag,
   User,
@@ -13,9 +13,9 @@ import {
   LogOut,
   Menu,
   X,
-} from 'lucide-react';
-import { useAuth } from '../context/AuthContext';
-import { showSuccess } from '../utils/toast';
+} from "lucide-react";
+import { useAuth } from "../context/AuthContext";
+import { showSuccess } from "../utils/toast";
 
 const DashboardLayout = () => {
   const { user, logout } = useAuth();
@@ -25,10 +25,10 @@ const DashboardLayout = () => {
   const handleLogout = async () => {
     try {
       await logout();
-      showSuccess('Logged out successfully');
-      navigate('/login');
+      showSuccess("Logged out successfully");
+      navigate("/login");
     } catch (error) {
-      console.error('Logout error:', error);
+      console.error("Logout error:", error);
     }
   };
 
@@ -36,30 +36,38 @@ const DashboardLayout = () => {
   const getMenuItems = () => {
     const role = user?.role?.toLowerCase();
 
-    if (role === 'admin') {
+    if (role === "admin") {
       return [
-        { path: '/dashboard/users', icon: Users, label: 'All Users' },
-        { path: '/dashboard/manage-books', icon: Library, label: 'Manage Books' },
-        { path: '/dashboard/all-orders', icon: ShoppingCart, label: 'All Orders' },
-        { path: '/dashboard/profile', icon: User, label: 'My Profile' },
+        { path: "/dashboard/users", icon: Users, label: "All Users" },
+        {
+          path: "/dashboard/manage-books",
+          icon: Library,
+          label: "Manage Books",
+        },
+        {
+          path: "/dashboard/all-orders",
+          icon: ShoppingCart,
+          label: "All Orders",
+        },
+        { path: "/dashboard/profile", icon: User, label: "My Profile" },
       ];
     }
 
-    if (role === 'librarian') {
+    if (role === "librarian") {
       return [
-        { path: '/dashboard/add-book', icon: PlusCircle, label: 'Add Book' },
-        { path: '/dashboard/my-books', icon: BookOpen, label: 'My Books' },
-        { path: '/dashboard/orders', icon: Package, label: 'Orders' },
-        { path: '/dashboard/profile', icon: User, label: 'My Profile' },
+        { path: "/dashboard/add-book", icon: PlusCircle, label: "Add Book" },
+        { path: "/dashboard/my-books", icon: BookOpen, label: "My Books" },
+        { path: "/dashboard/orders", icon: Package, label: "Orders" },
+        { path: "/dashboard/profile", icon: User, label: "My Profile" },
       ];
     }
 
     // Default user role
     return [
-      { path: '/dashboard/my-orders', icon: ShoppingBag, label: 'My Orders' },
-      { path: '/dashboard/profile', icon: User, label: 'My Profile' },
-      { path: '/dashboard/invoices', icon: FileText, label: 'Invoices' },
-      { path: '/dashboard/wishlist', icon: Heart, label: 'My Wishlist' },
+      { path: "/dashboard/my-orders", icon: ShoppingBag, label: "My Orders" },
+      { path: "/dashboard/profile", icon: User, label: "My Profile" },
+      { path: "/dashboard/invoices", icon: FileText, label: "Invoices" },
+      { path: "/dashboard/wishlist", icon: Heart, label: "My Wishlist" },
     ];
   };
 
@@ -68,7 +76,7 @@ const DashboardLayout = () => {
   return (
     <div className="drawer lg:drawer-open">
       <input id="dashboard-drawer" type="checkbox" className="drawer-toggle" />
-      
+
       {/* Drawer Content (Main Area) */}
       <div className="drawer-content flex flex-col bg-base-200">
         {/* Top Bar for Mobile */}
@@ -90,7 +98,10 @@ const DashboardLayout = () => {
               <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
                 <div className="w-10 rounded-full">
                   <img
-                    src={user?.photoURL || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.email}`}
+                    src={
+                      user?.photoURL ||
+                      `https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.email}`
+                    }
                     alt={user?.displayName || user?.name}
                   />
                 </div>
@@ -128,7 +139,9 @@ const DashboardLayout = () => {
               </div>
               <div>
                 <h2 className="text-2xl font-bold">Dashboard</h2>
-                <p className="text-xs text-base-content/60 capitalize">{user?.role || 'User'} Panel</p>
+                <p className="text-xs text-base-content/60 capitalize">
+                  {user?.role || "User"} Panel
+                </p>
               </div>
             </div>
           </div>
@@ -139,14 +152,21 @@ const DashboardLayout = () => {
               <div className="avatar">
                 <div className="w-12 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
                   <img
-                    src={user?.photoURL || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.email}`}
+                    src={
+                      user?.photoURL ||
+                      `https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.email}`
+                    }
                     alt={user?.displayName || user?.name}
                   />
                 </div>
               </div>
               <div className="flex-1 min-w-0">
-                <p className="font-semibold truncate">{user?.displayName || user?.name}</p>
-                <p className="text-xs text-base-content/60 truncate">{user?.email}</p>
+                <p className="font-semibold truncate">
+                  {user?.displayName || user?.name}
+                </p>
+                <p className="text-xs text-base-content/60 truncate">
+                  {user?.email}
+                </p>
               </div>
             </div>
           </div>
@@ -162,8 +182,8 @@ const DashboardLayout = () => {
                     className={({ isActive }) =>
                       `flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
                         isActive
-                          ? 'bg-primary text-primary-content font-semibold'
-                          : 'hover:bg-base-200'
+                          ? "bg-primary text-primary-content font-semibold"
+                          : "hover:bg-base-200"
                       }`
                     }
                   >
@@ -191,20 +211,6 @@ const DashboardLayout = () => {
           <div className="mt-4 text-center text-xs text-base-content/50">
             © 2025 BookCourier
           </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default DashboardLayout;
-          <label htmlFor="dashboard-drawer" className="drawer-overlay"></label>
-          <ul className="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
-            <li className="menu-title">Dashboard Menu</li>
-            <li>
-              <a>Sidebar items will go here</a>
-            </li>
-          </ul>
         </div>
       </div>
     </div>

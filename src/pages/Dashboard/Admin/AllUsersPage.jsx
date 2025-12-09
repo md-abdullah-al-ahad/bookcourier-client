@@ -1,15 +1,15 @@
-import { useState } from 'react';
-import { Users, Search, Shield, UserCog } from 'lucide-react';
-import useFetch from '../../../hooks/useFetch';
-import SkeletonTable from '../../../components/SkeletonTable';
-import { showSuccess, showError } from '../../../utils/toast';
-import { patch } from '../../../utils/api';
+import { useState } from "react";
+import { Users, Search, Shield, UserCog } from "lucide-react";
+import useFetch from "../../../hooks/useFetch";
+import SkeletonTable from "../../../components/SkeletonTable";
+import { showSuccess, showError } from "../../../utils/toast";
+import { patch } from "../../../utils/api";
 
 const AllUsersPage = () => {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [updatingUserId, setUpdatingUserId] = useState(null);
 
-  const { data: usersData, loading, error, refetch } = useFetch('/users/all');
+  const { data: usersData, loading, error, refetch } = useFetch("/users/all");
   const users = usersData?.users || [];
 
   // Filter users by search term
@@ -24,11 +24,11 @@ const AllUsersPage = () => {
   // Get role badge class
   const getRoleBadge = (role) => {
     const roleColors = {
-      admin: 'badge-secondary',
-      librarian: 'badge-primary',
-      user: 'badge-ghost',
+      admin: "badge-secondary",
+      librarian: "badge-primary",
+      user: "badge-ghost",
     };
-    return roleColors[role?.toLowerCase()] || 'badge-ghost';
+    return roleColors[role?.toLowerCase()] || "badge-ghost";
   };
 
   // Handle role change
@@ -44,7 +44,7 @@ const AllUsersPage = () => {
       showSuccess(`User role updated to ${newRole} successfully`);
       refetch();
     } catch (error) {
-      showError(error.response?.data?.message || 'Failed to update user role');
+      showError(error.response?.data?.message || "Failed to update user role");
     } finally {
       setUpdatingUserId(null);
     }
@@ -66,7 +66,9 @@ const AllUsersPage = () => {
       <div>
         <div className="mb-6">
           <h1 className="text-3xl font-bold mb-2">Manage Users</h1>
-          <p className="text-base-content/70">Manage user roles and permissions</p>
+          <p className="text-base-content/70">
+            Manage user roles and permissions
+          </p>
         </div>
         <div className="text-center py-16">
           <div className="flex justify-center mb-4">
@@ -86,7 +88,9 @@ const AllUsersPage = () => {
       {/* Header */}
       <div className="mb-6">
         <h1 className="text-3xl font-bold mb-2">Manage Users</h1>
-        <p className="text-base-content/70">Manage user roles and permissions</p>
+        <p className="text-base-content/70">
+          Manage user roles and permissions
+        </p>
       </div>
 
       {/* Stats */}
@@ -159,8 +163,10 @@ const AllUsersPage = () => {
 
                 {/* Role */}
                 <td>
-                  <span className={`badge ${getRoleBadge(user.role)} capitalize`}>
-                    {user.role || 'User'}
+                  <span
+                    className={`badge ${getRoleBadge(user.role)} capitalize`}
+                  >
+                    {user.role || "User"}
                   </span>
                 </td>
 
@@ -168,28 +174,28 @@ const AllUsersPage = () => {
                 <td>
                   <div className="flex gap-2">
                     <button
-                      onClick={() => handleRoleChange(user._id, 'librarian')}
+                      onClick={() => handleRoleChange(user._id, "librarian")}
                       className={`btn btn-sm btn-primary ${
-                        updatingUserId === user._id ? 'loading' : ''
+                        updatingUserId === user._id ? "loading" : ""
                       }`}
                       disabled={
-                        user.role?.toLowerCase() === 'librarian' ||
+                        user.role?.toLowerCase() === "librarian" ||
                         updatingUserId === user._id
                       }
                     >
-                      {updatingUserId === user._id ? '' : 'Make Librarian'}
+                      {updatingUserId === user._id ? "" : "Make Librarian"}
                     </button>
                     <button
-                      onClick={() => handleRoleChange(user._id, 'admin')}
+                      onClick={() => handleRoleChange(user._id, "admin")}
                       className={`btn btn-sm btn-secondary ${
-                        updatingUserId === user._id ? 'loading' : ''
+                        updatingUserId === user._id ? "loading" : ""
                       }`}
                       disabled={
-                        user.role?.toLowerCase() === 'admin' ||
+                        user.role?.toLowerCase() === "admin" ||
                         updatingUserId === user._id
                       }
                     >
-                      {updatingUserId === user._id ? '' : 'Make Admin'}
+                      {updatingUserId === user._id ? "" : "Make Admin"}
                     </button>
                   </div>
                 </td>
@@ -231,8 +237,12 @@ const AllUsersPage = () => {
                   <Shield className="w-4 h-4" />
                   Current Role
                 </span>
-                <span className={`badge ${getRoleBadge(user.role)} badge-lg capitalize`}>
-                  {user.role || 'User'}
+                <span
+                  className={`badge ${getRoleBadge(
+                    user.role
+                  )} badge-lg capitalize`}
+                >
+                  {user.role || "User"}
                 </span>
               </div>
 
@@ -241,28 +251,28 @@ const AllUsersPage = () => {
               {/* Actions */}
               <div className="space-y-2">
                 <button
-                  onClick={() => handleRoleChange(user._id, 'librarian')}
+                  onClick={() => handleRoleChange(user._id, "librarian")}
                   className={`btn btn-sm btn-primary btn-block ${
-                    updatingUserId === user._id ? 'loading' : ''
+                    updatingUserId === user._id ? "loading" : ""
                   }`}
                   disabled={
-                    user.role?.toLowerCase() === 'librarian' ||
+                    user.role?.toLowerCase() === "librarian" ||
                     updatingUserId === user._id
                   }
                 >
-                  {updatingUserId === user._id ? '' : 'Make Librarian'}
+                  {updatingUserId === user._id ? "" : "Make Librarian"}
                 </button>
                 <button
-                  onClick={() => handleRoleChange(user._id, 'admin')}
+                  onClick={() => handleRoleChange(user._id, "admin")}
                   className={`btn btn-sm btn-secondary btn-block ${
-                    updatingUserId === user._id ? 'loading' : ''
+                    updatingUserId === user._id ? "loading" : ""
                   }`}
                   disabled={
-                    user.role?.toLowerCase() === 'admin' ||
+                    user.role?.toLowerCase() === "admin" ||
                     updatingUserId === user._id
                   }
                 >
-                  {updatingUserId === user._id ? '' : 'Make Admin'}
+                  {updatingUserId === user._id ? "" : "Make Admin"}
                 </button>
               </div>
             </div>
@@ -274,9 +284,7 @@ const AllUsersPage = () => {
       {filteredUsers.length === 0 && users.length > 0 && (
         <div className="text-center py-16">
           <p className="text-xl font-semibold mb-2">No users found</p>
-          <p className="text-base-content/70">
-            Try a different search term
-          </p>
+          <p className="text-base-content/70">Try a different search term</p>
         </div>
       )}
     </div>
