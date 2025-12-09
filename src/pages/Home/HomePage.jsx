@@ -2,6 +2,7 @@ import BannerSlider from "../../components/home/BannerSlider";
 import LatestBooks from "../../components/home/LatestBooks";
 import WhyChooseUs from "../../components/home/WhyChooseUs";
 import StatisticsSection from "../../components/home/StatisticsSection";
+import Testimonials from "../../components/home/Testimonials";
 import CoverageSection from "../../components/home/CoverageSection";
 
 const HomePage = () => {
@@ -18,6 +19,9 @@ const HomePage = () => {
 
       {/* Statistics Section */}
       <StatisticsSection />
+
+      {/* Testimonials Section */}
+      <Testimonials />
 
       {/* Coverage Section */}
       <CoverageSection />
