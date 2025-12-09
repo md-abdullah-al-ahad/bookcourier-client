@@ -25,7 +25,10 @@ const useFetch = (url, options = {}) => {
 
       // Only update state if component is still mounted
       if (isMountedRef.current) {
-        setData(response);
+        // Handle response structure: {success, message, data}
+        // Extract the actual data from response.data
+        const actualData = response?.data || response;
+        setData(actualData);
         setLoading(false);
       }
     } catch (err) {
@@ -51,6 +54,9 @@ const useFetch = (url, options = {}) => {
 
   // Fetch data on mount and when url changes
   useEffect(() => {
+    // Reset mounted ref to true when effect runs
+    isMountedRef.current = true;
+
     if (url) {
       fetchData();
     }

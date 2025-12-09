@@ -59,7 +59,7 @@ const AllBooksPage = () => {
 
   const books = data?.books || [];
   const totalPages = data?.totalPages || 1;
-  const totalBooks = data?.total || 0;
+  const totalBooks = data?.totalCount || 0;
 
   // Generate page numbers array
   const getPageNumbers = () => {

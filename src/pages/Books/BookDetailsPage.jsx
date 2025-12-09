@@ -16,10 +16,12 @@ const BookDetailsPage = () => {
 
   // Fetch book details
   const {
-    data: book,
+    data: bookData,
     loading: bookLoading,
     error: bookError,
   } = useFetch(`/books/${id}`);
+
+  const book = bookData?.book || bookData;
 
   // Fetch reviews
   const { data: reviewsData, loading: reviewsLoading } = useFetch(

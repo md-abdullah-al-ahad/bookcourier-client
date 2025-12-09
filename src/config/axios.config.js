@@ -34,9 +34,7 @@ api.interceptors.request.use(
     }
     return Promise.reject(error);
   }
-);
-
-// Response interceptor - Handle responses and errors
+); // Response interceptor - Handle responses and errors
 api.interceptors.response.use(
   (response) => {
     // Return response data directly

@@ -10,7 +10,8 @@ import { put } from "../../../utils/api";
 const EditBookPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { data: book, loading, error } = useFetch(`/books/${id}`);
+  const { data: bookData, loading, error } = useFetch(`/books/${id}`);
+  const book = bookData?.book || bookData;
 
   const {
     register,

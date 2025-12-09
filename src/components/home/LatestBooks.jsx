@@ -8,10 +8,12 @@ import { useEffect } from "react";
 
 const LatestBooks = () => {
   const {
-    data: books,
+    data: booksData,
     loading,
     error,
   } = useFetch("/books?sort=newest&limit=6");
+
+  const books = booksData?.books || [];
 
   // Show error toast if fetch fails
   useEffect(() => {
