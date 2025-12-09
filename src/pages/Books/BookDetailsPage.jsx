@@ -6,13 +6,14 @@ import PageLoader from "../../components/PageLoader";
 import OrderModal from "../../components/modals/OrderModal";
 import { showSuccess, showError } from "../../utils/toast";
 import { formatCurrency } from "../../utils/formatters";
-import { post } from "../../utils/api";
+import { post, del, get } from "../../utils/api";
 
 const BookDetailsPage = () => {
   const { id } = useParams();
   const [isInWishlist, setIsInWishlist] = useState(false);
   const [wishlistLoading, setWishlistLoading] = useState(false);
   const [showOrderModal, setShowOrderModal] = useState(false);
+  const [checkingWishlist, setCheckingWishlist] = useState(true);
 
   // Fetch book details
   const {
@@ -30,6 +31,29 @@ const BookDetailsPage = () => {
 
   const reviews = reviewsData?.reviews || [];
 
+  // Check if book is in wishlist
+  useEffect(() => {
+    const checkWishlist = async () => {
+      try {
+        setCheckingWishlist(true);
+        const response = await get("/wishlist");
+        const wishlistItems = response?.wishlist || [];
+        const isBookInWishlist = wishlistItems.some(
+          (item) => (item.book?._id || item.book) === id
+        );
+        setIsInWishlist(isBookInWishlist);
+      } catch (error) {
+        console.error("Error checking wishlist:", error);
+      } finally {
+        setCheckingWishlist(false);
+      }
+    };
+
+    if (id) {
+      checkWishlist();
+    }
+  }, [id]);
+
   // Handle add to wishlist
   const handleAddToWishlist = async () => {
     try {
@@ -44,6 +68,31 @@ const BookDetailsPage = () => {
     }
   };
 
+  // Handle remove from wishlist
+  const handleRemoveFromWishlist = async () => {
+    try {
+      setWishlistLoading(true);
+      await del(`/wishlist/${id}`);
+      setIsInWishlist(false);
+      showSuccess("Removed from wishlist successfully!");
+    } catch (error) {
+      showError(
+        error.response?.data?.message || "Failed to remove from wishlist"
+      );
+    } finally {
+      setWishlistLoading(false);
+    }
+  };
+
+  // Handle wishlist toggle
+  const handleWishlistToggle = () => {
+    if (isInWishlist) {
+      handleRemoveFromWishlist();
+    } else {
+      handleAddToWishlist();
+    }
+  };
+
   // Handle order now
   const handleOrderNow = () => {
     setShowOrderModal(true);
@@ -54,8 +103,8 @@ const BookDetailsPage = () => {
     return <PageLoader />;
   }
 
-  // Show error state (book not found)
-  if (bookError || !book) {
+  // Show error state (book not found) - only show if loading is complete and there's an error or no book
+  if (!bookLoading && (bookError || !book)) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-base-200">
         <div className="text-center">
@@ -69,6 +118,11 @@ const BookDetailsPage = () => {
         </div>
       </div>
     );
+  }
+
+  // Don't render the rest if book is not loaded yet
+  if (!book) {
+    return <PageLoader />;
   }
 
   const getStatusBadge = (status) => {
@@ -200,16 +254,22 @@ const BookDetailsPage = () => {
                   Order Now
                 </button>
                 <button
-                  onClick={handleAddToWishlist}
-                  disabled={isInWishlist || wishlistLoading}
+                  onClick={handleWishlistToggle}
+                  disabled={wishlistLoading || checkingWishlist}
                   className={`btn btn-outline btn-lg ${
-                    isInWishlist ? "btn-success" : ""
+                    isInWishlist ? "btn-success" : "btn-primary"
                   }`}
                 >
-                  <Heart
-                    className={`w-5 h-5 ${isInWishlist ? "fill-current" : ""}`}
-                  />
-                  {isInWishlist ? "In Wishlist" : "Add to Wishlist"}
+                  {wishlistLoading || checkingWishlist ? (
+                    <span className="loading loading-spinner loading-sm"></span>
+                  ) : (
+                    <Heart
+                      className={`w-5 h-5 ${
+                        isInWishlist ? "fill-current" : ""
+                      }`}
+                    />
+                  )}
+                  {isInWishlist ? "Remove from Wishlist" : "Add to Wishlist"}
                 </button>
               </div>
             </div>

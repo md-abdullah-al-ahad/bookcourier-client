@@ -16,6 +16,8 @@ import {
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { showSuccess } from "../utils/toast";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 const DashboardLayout = () => {
   const { user, logout } = useAuth();
@@ -49,7 +51,7 @@ const DashboardLayout = () => {
           icon: ShoppingCart,
           label: "All Orders",
         },
-        { path: "/dashboard/profile", icon: User, label: "My Profile" },
+        { path: "/dashboard/my-profile", icon: User, label: "My Profile" },
       ];
     }
 
@@ -58,16 +60,16 @@ const DashboardLayout = () => {
         { path: "/dashboard/add-book", icon: PlusCircle, label: "Add Book" },
         { path: "/dashboard/my-books", icon: BookOpen, label: "My Books" },
         { path: "/dashboard/orders", icon: Package, label: "Orders" },
-        { path: "/dashboard/profile", icon: User, label: "My Profile" },
+        { path: "/dashboard/my-profile", icon: User, label: "My Profile" },
       ];
     }
 
     // Default user role
     return [
       { path: "/dashboard/my-orders", icon: ShoppingBag, label: "My Orders" },
-      { path: "/dashboard/profile", icon: User, label: "My Profile" },
+      { path: "/dashboard/my-profile", icon: User, label: "My Profile" },
       { path: "/dashboard/invoices", icon: FileText, label: "Invoices" },
-      { path: "/dashboard/wishlist", icon: Heart, label: "My Wishlist" },
+      { path: "/dashboard/my-wishlist", icon: Heart, label: "My Wishlist" },
     ];
   };
 
@@ -79,8 +81,11 @@ const DashboardLayout = () => {
 
       {/* Drawer Content (Main Area) */}
       <div className="drawer-content flex flex-col bg-base-200">
+        {/* Navbar */}
+        <Navbar />
+
         {/* Top Bar for Mobile */}
-        <div className="navbar bg-base-100 shadow-md lg:hidden sticky top-0 z-10">
+        <div className="navbar bg-base-100 shadow-md lg:hidden sticky top-16 z-10">
           <div className="flex-none">
             <label
               htmlFor="dashboard-drawer"
@@ -125,6 +130,9 @@ const DashboardLayout = () => {
         <div className="flex-1 p-4 md:p-8">
           <Outlet />
         </div>
+
+        {/* Footer */}
+        <Footer />
       </div>
 
       {/* Drawer Side (Sidebar) */}
