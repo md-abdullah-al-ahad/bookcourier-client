@@ -1,19 +1,19 @@
-import { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { CreditCard, Lock, CheckCircle } from 'lucide-react';
-import useFetch from '../../hooks/useFetch';
-import PageLoader from '../../components/PageLoader';
-import { post, patch } from '../../utils/api';
-import { showSuccess, showError } from '../../utils/toast';
-import { formatCurrency } from '../../utils/formatters';
+import { useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { CreditCard, Lock, CheckCircle } from "lucide-react";
+import useFetch from "../../hooks/useFetch";
+import PageLoader from "../../components/PageLoader";
+import { post, patch } from "../../utils/api";
+import { showSuccess, showError } from "../../utils/toast";
+import { formatCurrency } from "../../utils/formatters";
 
 const PaymentPage = () => {
   const { orderId } = useParams();
   const navigate = useNavigate();
-  
-  const [cardNumber, setCardNumber] = useState('');
-  const [expiryDate, setExpiryDate] = useState('');
-  const [cvv, setCvv] = useState('');
+
+  const [cardNumber, setCardNumber] = useState("");
+  const [expiryDate, setExpiryDate] = useState("");
+  const [cvv, setCvv] = useState("");
   const [processing, setProcessing] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
@@ -23,16 +23,16 @@ const PaymentPage = () => {
 
   // Format card number with spaces
   const handleCardNumberChange = (e) => {
-    const value = e.target.value.replace(/\s/g, '');
+    const value = e.target.value.replace(/\s/g, "");
     if (value.length <= 16 && /^\d*$/.test(value)) {
-      const formatted = value.match(/.{1,4}/g)?.join(' ') || value;
+      const formatted = value.match(/.{1,4}/g)?.join(" ") || value;
       setCardNumber(formatted);
     }
   };
 
   // Format expiry date
   const handleExpiryDateChange = (e) => {
-    const value = e.target.value.replace(/\D/g, '');
+    const value = e.target.value.replace(/\D/g, "");
     if (value.length <= 4) {
       if (value.length >= 2) {
         setExpiryDate(`${value.slice(0, 2)}/${value.slice(2)}`);
@@ -44,7 +44,7 @@ const PaymentPage = () => {
 
   // Handle CVV input
   const handleCvvChange = (e) => {
-    const value = e.target.value.replace(/\D/g, '');
+    const value = e.target.value.replace(/\D/g, "");
     if (value.length <= 3) {
       setCvv(value);
     }
@@ -55,19 +55,19 @@ const PaymentPage = () => {
     e.preventDefault();
 
     // Validation
-    const cardNumberClean = cardNumber.replace(/\s/g, '');
+    const cardNumberClean = cardNumber.replace(/\s/g, "");
     if (cardNumberClean.length !== 16) {
-      showError('Please enter a valid 16-digit card number');
+      showError("Please enter a valid 16-digit card number");
       return;
     }
 
     if (expiryDate.length !== 5) {
-      showError('Please enter a valid expiry date (MM/YY)');
+      showError("Please enter a valid expiry date (MM/YY)");
       return;
     }
 
     if (cvv.length !== 3) {
-      showError('Please enter a valid 3-digit CVV');
+      showError("Please enter a valid 3-digit CVV");
       return;
     }
 
@@ -75,19 +75,22 @@ const PaymentPage = () => {
       setProcessing(true);
 
       // Generate mock payment ID
-      const paymentId = `PAY-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
+      const paymentId = `PAY-${Date.now()}-${Math.random()
+        .toString(36)
+        .substr(2, 9)
+        .toUpperCase()}`;
 
       // Process payment
-      await post('/payments', {
+      await post("/payments", {
         orderId,
         paymentId,
         amount: order.totalPrice,
-        paymentMethod: 'card',
+        paymentMethod: "card",
       });
 
       // Update order payment status
       await patch(`/orders/${orderId}/payment-status`, {
-        paymentStatus: 'paid',
+        paymentStatus: "paid",
       });
 
       // Show success modal
@@ -95,11 +98,13 @@ const PaymentPage = () => {
 
       // Redirect after 2 seconds
       setTimeout(() => {
-        navigate('/dashboard/my-orders');
-        showSuccess('Payment completed successfully!');
+        navigate("/dashboard/my-orders");
+        showSuccess("Payment completed successfully!");
       }, 2000);
     } catch (error) {
-      showError(error.response?.data?.message || 'Payment failed. Please try again.');
+      showError(
+        error.response?.data?.message || "Payment failed. Please try again."
+      );
     } finally {
       setProcessing(false);
     }
@@ -119,7 +124,10 @@ const PaymentPage = () => {
           <p className="text-base-content/70 mb-6">
             The order you're trying to pay for could not be found.
           </p>
-          <button onClick={() => navigate('/dashboard/my-orders')} className="btn btn-primary">
+          <button
+            onClick={() => navigate("/dashboard/my-orders")}
+            className="btn btn-primary"
+          >
             Go to My Orders
           </button>
         </div>
@@ -132,7 +140,9 @@ const PaymentPage = () => {
       <div className="container mx-auto max-w-4xl">
         {/* Page Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold mb-2">Complete Payment</h1>
+          <h1 className="text-3xl md:text-4xl font-bold mb-2">
+            Complete Payment
+          </h1>
           <p className="text-base-content/70">
             Secure payment for Order #{order._id?.slice(-8).toUpperCase()}
           </p>
@@ -142,7 +152,8 @@ const PaymentPage = () => {
         <div className="alert alert-info mb-6">
           <Lock className="w-5 h-5" />
           <span>
-            <strong>Test Payment System:</strong> This is a demo. Use any 16-digit card number.
+            <strong>Test Payment System:</strong> This is a demo. Use any
+            16-digit card number.
           </span>
         </div>
 
@@ -157,14 +168,18 @@ const PaymentPage = () => {
                 <div className="avatar">
                   <div className="w-20 h-20 rounded-lg">
                     <img
-                      src={order.book?.image || 'https://via.placeholder.com/100'}
+                      src={
+                        order.book?.image || "https://via.placeholder.com/100"
+                      }
                       alt={order.book?.name}
                     />
                   </div>
                 </div>
                 <div className="flex-1">
                   <h3 className="font-semibold text-lg">{order.book?.name}</h3>
-                  <p className="text-sm text-base-content/60">{order.book?.author}</p>
+                  <p className="text-sm text-base-content/60">
+                    {order.book?.author}
+                  </p>
                   <p className="text-sm font-semibold text-primary mt-1">
                     {formatCurrency(order.book?.price)}
                   </p>
@@ -178,15 +193,15 @@ const PaymentPage = () => {
                 <h3 className="font-semibold">Delivery Details</h3>
                 <div className="text-sm space-y-1">
                   <p>
-                    <span className="text-base-content/60">Name:</span>{' '}
+                    <span className="text-base-content/60">Name:</span>{" "}
                     <span className="font-medium">{order.customerName}</span>
                   </p>
                   <p>
-                    <span className="text-base-content/60">Phone:</span>{' '}
+                    <span className="text-base-content/60">Phone:</span>{" "}
                     <span className="font-medium">{order.customerPhone}</span>
                   </p>
                   <p>
-                    <span className="text-base-content/60">Address:</span>{' '}
+                    <span className="text-base-content/60">Address:</span>{" "}
                     <span className="font-medium">{order.deliveryAddress}</span>
                   </p>
                 </div>
@@ -216,7 +231,9 @@ const PaymentPage = () => {
                 {/* Card Number */}
                 <div className="form-control mb-4">
                   <label className="label">
-                    <span className="label-text font-semibold">Card Number</span>
+                    <span className="label-text font-semibold">
+                      Card Number
+                    </span>
                   </label>
                   <input
                     type="text"
@@ -233,7 +250,9 @@ const PaymentPage = () => {
                   {/* Expiry Date */}
                   <div className="form-control">
                     <label className="label">
-                      <span className="label-text font-semibold">Expiry Date</span>
+                      <span className="label-text font-semibold">
+                        Expiry Date
+                      </span>
                     </label>
                     <input
                       type="text"
@@ -266,10 +285,14 @@ const PaymentPage = () => {
                 {/* Pay Now Button */}
                 <button
                   type="submit"
-                  className={`btn btn-primary btn-lg btn-block ${processing ? 'loading' : ''}`}
+                  className={`btn btn-primary btn-lg btn-block ${
+                    processing ? "loading" : ""
+                  }`}
                   disabled={processing}
                 >
-                  {processing ? 'Processing...' : `Pay ${formatCurrency(order.totalPrice)}`}
+                  {processing
+                    ? "Processing..."
+                    : `Pay ${formatCurrency(order.totalPrice)}`}
                 </button>
               </form>
 
