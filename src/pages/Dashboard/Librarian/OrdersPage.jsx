@@ -1,45 +1,50 @@
-import { useState } from 'react';
-import { Package, Calendar, User, Phone, MapPin } from 'lucide-react';
-import useFetch from '../../../hooks/useFetch';
-import SkeletonTable from '../../../components/SkeletonTable';
-import { formatDate } from '../../../utils/formatters';
-import { showSuccess, showError } from '../../../utils/toast';
-import { patch } from '../../../utils/api';
+import { useState } from "react";
+import { Package, Calendar, User, Phone, MapPin } from "lucide-react";
+import useFetch from "../../../hooks/useFetch";
+import SkeletonTable from "../../../components/SkeletonTable";
+import { formatDate } from "../../../utils/formatters";
+import { showSuccess, showError } from "../../../utils/toast";
+import { patch } from "../../../utils/api";
 
 const OrdersPage = () => {
-  const [statusFilter, setStatusFilter] = useState('all');
+  const [statusFilter, setStatusFilter] = useState("all");
   const [updatingOrderId, setUpdatingOrderId] = useState(null);
   const [cancellingOrderId, setCancellingOrderId] = useState(null);
 
-  const { data: ordersData, loading, error, refetch } = useFetch('/orders/librarian/orders');
+  const {
+    data: ordersData,
+    loading,
+    error,
+    refetch,
+  } = useFetch("/orders/librarian/orders");
   const orders = ordersData?.orders || [];
 
   // Filter orders by status
   const filteredOrders = orders.filter((order) => {
-    if (statusFilter === 'all') return true;
+    if (statusFilter === "all") return true;
     return order.orderStatus?.toLowerCase() === statusFilter;
   });
 
   // Get status badge class
   const getStatusBadge = (status) => {
     const statusColors = {
-      pending: 'badge-warning',
-      processing: 'badge-info',
-      shipped: 'badge-info',
-      delivered: 'badge-success',
-      cancelled: 'badge-error',
+      pending: "badge-warning",
+      processing: "badge-info",
+      shipped: "badge-info",
+      delivered: "badge-success",
+      cancelled: "badge-error",
     };
-    return statusColors[status?.toLowerCase()] || 'badge-ghost';
+    return statusColors[status?.toLowerCase()] || "badge-ghost";
   };
 
   // Get payment status badge class
   const getPaymentBadge = (status) => {
     const paymentColors = {
-      paid: 'badge-success',
-      unpaid: 'badge-warning',
-      refunded: 'badge-info',
+      paid: "badge-success",
+      unpaid: "badge-warning",
+      refunded: "badge-info",
     };
-    return paymentColors[status?.toLowerCase()] || 'badge-ghost';
+    return paymentColors[status?.toLowerCase()] || "badge-ghost";
   };
 
   // Handle status change
@@ -47,10 +52,12 @@ const OrdersPage = () => {
     try {
       setUpdatingOrderId(orderId);
       await patch(`/orders/${orderId}/status`, { status: newStatus });
-      showSuccess('Order status updated successfully');
+      showSuccess("Order status updated successfully");
       refetch();
     } catch (error) {
-      showError(error.response?.data?.message || 'Failed to update order status');
+      showError(
+        error.response?.data?.message || "Failed to update order status"
+      );
     } finally {
       setUpdatingOrderId(null);
     }
@@ -58,16 +65,18 @@ const OrdersPage = () => {
 
   // Handle cancel order
   const handleCancelOrder = async (orderId) => {
-    const confirmed = window.confirm('Are you sure you want to cancel this order?');
+    const confirmed = window.confirm(
+      "Are you sure you want to cancel this order?"
+    );
     if (!confirmed) return;
 
     try {
       setCancellingOrderId(orderId);
       await patch(`/orders/${orderId}/cancel`);
-      showSuccess('Order cancelled successfully');
+      showSuccess("Order cancelled successfully");
       refetch();
     } catch (error) {
-      showError(error.response?.data?.message || 'Failed to cancel order');
+      showError(error.response?.data?.message || "Failed to cancel order");
     } finally {
       setCancellingOrderId(null);
     }
@@ -161,13 +170,15 @@ const OrdersPage = () => {
                 {/* Order ID */}
                 <td>
                   <span className="text-sm font-mono">
-                    {order._id?.slice(-8) || 'N/A'}
+                    {order._id?.slice(-8) || "N/A"}
                   </span>
                 </td>
 
                 {/* Book Name */}
                 <td>
-                  <div className="font-medium">{order.book?.name || 'Book'}</div>
+                  <div className="font-medium">
+                    {order.book?.name || "Book"}
+                  </div>
                   <div className="text-sm text-base-content/60">
                     {order.book?.author}
                   </div>
@@ -199,7 +210,9 @@ const OrdersPage = () => {
                 <td>
                   <div className="flex items-center gap-2">
                     <Calendar className="w-4 h-4 text-base-content/60" />
-                    <span className="text-sm">{formatDate(order.createdAt)}</span>
+                    <span className="text-sm">
+                      {formatDate(order.createdAt)}
+                    </span>
                   </div>
                 </td>
 
@@ -207,13 +220,15 @@ const OrdersPage = () => {
                 <td>
                   <select
                     className={`select select-sm select-bordered ${
-                      updatingOrderId === order._id ? 'loading' : ''
+                      updatingOrderId === order._id ? "loading" : ""
                     }`}
-                    value={order.orderStatus?.toLowerCase() || 'pending'}
-                    onChange={(e) => handleStatusChange(order._id, e.target.value)}
+                    value={order.orderStatus?.toLowerCase() || "pending"}
+                    onChange={(e) =>
+                      handleStatusChange(order._id, e.target.value)
+                    }
                     disabled={
                       updatingOrderId === order._id ||
-                      order.orderStatus?.toLowerCase() === 'cancelled'
+                      order.orderStatus?.toLowerCase() === "cancelled"
                     }
                   >
                     <option value="pending">Pending</option>
@@ -225,22 +240,24 @@ const OrdersPage = () => {
 
                 {/* Payment Status */}
                 <td>
-                  <span className={`badge ${getPaymentBadge(order.paymentStatus)}`}>
+                  <span
+                    className={`badge ${getPaymentBadge(order.paymentStatus)}`}
+                  >
                     {order.paymentStatus}
                   </span>
                 </td>
 
                 {/* Actions */}
                 <td>
-                  {order.orderStatus?.toLowerCase() === 'pending' && (
+                  {order.orderStatus?.toLowerCase() === "pending" && (
                     <button
                       onClick={() => handleCancelOrder(order._id)}
                       className={`btn btn-sm btn-error ${
-                        cancellingOrderId === order._id ? 'loading' : ''
+                        cancellingOrderId === order._id ? "loading" : ""
                       }`}
                       disabled={cancellingOrderId === order._id}
                     >
-                      {cancellingOrderId === order._id ? '' : 'Cancel'}
+                      {cancellingOrderId === order._id ? "" : "Cancel"}
                     </button>
                   )}
                 </td>
@@ -258,16 +275,22 @@ const OrdersPage = () => {
               {/* Order ID */}
               <div className="flex items-center justify-between mb-3">
                 <span className="text-sm font-mono text-base-content/60">
-                  #{order._id?.slice(-8) || 'N/A'}
+                  #{order._id?.slice(-8) || "N/A"}
                 </span>
-                <span className={`badge ${getPaymentBadge(order.paymentStatus)}`}>
+                <span
+                  className={`badge ${getPaymentBadge(order.paymentStatus)}`}
+                >
                   {order.paymentStatus}
                 </span>
               </div>
 
               {/* Book Info */}
-              <h3 className="font-bold text-lg">{order.book?.name || 'Book'}</h3>
-              <p className="text-sm text-base-content/60 mb-3">{order.book?.author}</p>
+              <h3 className="font-bold text-lg">
+                {order.book?.name || "Book"}
+              </h3>
+              <p className="text-sm text-base-content/60 mb-3">
+                {order.book?.author}
+              </p>
 
               <div className="divider my-2"></div>
 
@@ -300,13 +323,15 @@ const OrdersPage = () => {
                 </label>
                 <select
                   className={`select select-bordered w-full ${
-                    updatingOrderId === order._id ? 'loading' : ''
+                    updatingOrderId === order._id ? "loading" : ""
                   }`}
-                  value={order.orderStatus?.toLowerCase() || 'pending'}
-                  onChange={(e) => handleStatusChange(order._id, e.target.value)}
+                  value={order.orderStatus?.toLowerCase() || "pending"}
+                  onChange={(e) =>
+                    handleStatusChange(order._id, e.target.value)
+                  }
                   disabled={
                     updatingOrderId === order._id ||
-                    order.orderStatus?.toLowerCase() === 'cancelled'
+                    order.orderStatus?.toLowerCase() === "cancelled"
                   }
                 >
                   <option value="pending">Pending</option>
@@ -317,14 +342,14 @@ const OrdersPage = () => {
               </div>
 
               {/* Actions */}
-              {order.orderStatus?.toLowerCase() === 'pending' && (
+              {order.orderStatus?.toLowerCase() === "pending" && (
                 <>
                   <div className="divider my-2"></div>
                   <div className="card-actions">
                     <button
                       onClick={() => handleCancelOrder(order._id)}
                       className={`btn btn-sm btn-error btn-block ${
-                        cancellingOrderId === order._id ? 'loading' : ''
+                        cancellingOrderId === order._id ? "loading" : ""
                       }`}
                       disabled={cancellingOrderId === order._id}
                     >
@@ -342,9 +367,7 @@ const OrdersPage = () => {
       {filteredOrders.length === 0 && orders.length > 0 && (
         <div className="text-center py-16">
           <p className="text-xl font-semibold mb-2">No orders found</p>
-          <p className="text-base-content/70">
-            Try adjusting your filter
-          </p>
+          <p className="text-base-content/70">Try adjusting your filter</p>
         </div>
       )}
     </div>
