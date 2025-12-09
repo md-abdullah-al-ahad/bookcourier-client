@@ -1,7 +1,7 @@
-import { useForm } from 'react-hook-form';
-import { BookPlus } from 'lucide-react';
-import { showSuccess, showError } from '../../../utils/toast';
-import { post } from '../../../utils/api';
+import { useForm } from "react-hook-form";
+import { BookPlus } from "lucide-react";
+import { showSuccess, showError } from "../../../utils/toast";
+import { post } from "../../../utils/api";
 
 const AddBookPage = () => {
   const {
@@ -11,7 +11,7 @@ const AddBookPage = () => {
     formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {
-      status: 'published',
+      status: "published",
     },
   });
 
@@ -24,11 +24,13 @@ const AddBookPage = () => {
         price: parseFloat(data.price),
       };
 
-      await post('/books/add', bookData);
-      showSuccess('Book added successfully!');
+      await post("/books/add", bookData);
+      showSuccess("Book added successfully!");
       reset();
     } catch (error) {
-      showError(error.response?.data?.message || 'Failed to add book. Please try again.');
+      showError(
+        error.response?.data?.message || "Failed to add book. Please try again."
+      );
     }
   };
 
@@ -40,7 +42,9 @@ const AddBookPage = () => {
           <BookPlus className="w-8 h-8 text-primary" />
           Add New Book
         </h1>
-        <p className="text-base-content/70">Add a new book to your library collection</p>
+        <p className="text-base-content/70">
+          Add a new book to your library collection
+        </p>
       </div>
 
       {/* Form Card */}
@@ -57,18 +61,22 @@ const AddBookPage = () => {
               <input
                 type="text"
                 placeholder="Enter book name"
-                className={`input input-bordered w-full ${errors.name ? 'input-error' : ''}`}
-                {...register('name', {
-                  required: 'Book name is required',
+                className={`input input-bordered w-full ${
+                  errors.name ? "input-error" : ""
+                }`}
+                {...register("name", {
+                  required: "Book name is required",
                   minLength: {
                     value: 2,
-                    message: 'Book name must be at least 2 characters',
+                    message: "Book name must be at least 2 characters",
                   },
                 })}
               />
               {errors.name && (
                 <label className="label">
-                  <span className="label-text-alt text-error">{errors.name.message}</span>
+                  <span className="label-text-alt text-error">
+                    {errors.name.message}
+                  </span>
                 </label>
               )}
             </div>
@@ -83,18 +91,22 @@ const AddBookPage = () => {
               <input
                 type="text"
                 placeholder="Enter author name"
-                className={`input input-bordered w-full ${errors.author ? 'input-error' : ''}`}
-                {...register('author', {
-                  required: 'Author is required',
+                className={`input input-bordered w-full ${
+                  errors.author ? "input-error" : ""
+                }`}
+                {...register("author", {
+                  required: "Author is required",
                   minLength: {
                     value: 2,
-                    message: 'Author name must be at least 2 characters',
+                    message: "Author name must be at least 2 characters",
                   },
                 })}
               />
               {errors.author && (
                 <label className="label">
-                  <span className="label-text-alt text-error">{errors.author.message}</span>
+                  <span className="label-text-alt text-error">
+                    {errors.author.message}
+                  </span>
                 </label>
               )}
             </div>
@@ -109,18 +121,23 @@ const AddBookPage = () => {
               <input
                 type="url"
                 placeholder="https://example.com/book-cover.jpg"
-                className={`input input-bordered w-full ${errors.image ? 'input-error' : ''}`}
-                {...register('image', {
-                  required: 'Image URL is required',
+                className={`input input-bordered w-full ${
+                  errors.image ? "input-error" : ""
+                }`}
+                {...register("image", {
+                  required: "Image URL is required",
                   pattern: {
                     value: /^https?:\/\/.+\.(jpg|jpeg|png|webp|gif)$/i,
-                    message: 'Please enter a valid image URL (jpg, jpeg, png, webp, gif)',
+                    message:
+                      "Please enter a valid image URL (jpg, jpeg, png, webp, gif)",
                   },
                 })}
               />
               {errors.image && (
                 <label className="label">
-                  <span className="label-text-alt text-error">{errors.image.message}</span>
+                  <span className="label-text-alt text-error">
+                    {errors.image.message}
+                  </span>
                 </label>
               )}
             </div>
@@ -138,19 +155,23 @@ const AddBookPage = () => {
                   type="number"
                   step="0.01"
                   placeholder="0.00"
-                  className={`input input-bordered w-full ${errors.price ? 'input-error' : ''}`}
-                  {...register('price', {
-                    required: 'Price is required',
+                  className={`input input-bordered w-full ${
+                    errors.price ? "input-error" : ""
+                  }`}
+                  {...register("price", {
+                    required: "Price is required",
                     min: {
                       value: 0,
-                      message: 'Price must be 0 or greater',
+                      message: "Price must be 0 or greater",
                     },
                     valueAsNumber: true,
                   })}
                 />
                 {errors.price && (
                   <label className="label">
-                    <span className="label-text-alt text-error">{errors.price.message}</span>
+                    <span className="label-text-alt text-error">
+                      {errors.price.message}
+                    </span>
                   </label>
                 )}
               </div>
@@ -162,7 +183,7 @@ const AddBookPage = () => {
                 </label>
                 <select
                   className="select select-bordered w-full"
-                  {...register('status')}
+                  {...register("status")}
                 >
                   <option value="published">Published</option>
                   <option value="unpublished">Unpublished</option>
@@ -179,10 +200,12 @@ const AddBookPage = () => {
                 type="text"
                 placeholder="e.g., Fiction, Science, History"
                 className="input input-bordered w-full"
-                {...register('category')}
+                {...register("category")}
               />
               <label className="label">
-                <span className="label-text-alt text-base-content/60">Optional</span>
+                <span className="label-text-alt text-base-content/60">
+                  Optional
+                </span>
               </label>
             </div>
 
@@ -194,10 +217,12 @@ const AddBookPage = () => {
               <textarea
                 placeholder="Enter book description..."
                 className="textarea textarea-bordered h-32"
-                {...register('description')}
+                {...register("description")}
               />
               <label className="label">
-                <span className="label-text-alt text-base-content/60">Optional</span>
+                <span className="label-text-alt text-base-content/60">
+                  Optional
+                </span>
               </label>
             </div>
 
@@ -215,11 +240,13 @@ const AddBookPage = () => {
               </button>
               <button
                 type="submit"
-                className={`btn btn-primary gap-2 ${isSubmitting ? 'loading' : ''}`}
+                className={`btn btn-primary gap-2 ${
+                  isSubmitting ? "loading" : ""
+                }`}
                 disabled={isSubmitting}
               >
                 {!isSubmitting && <BookPlus className="w-5 h-5" />}
-                {isSubmitting ? 'Adding Book...' : 'Add Book'}
+                {isSubmitting ? "Adding Book..." : "Add Book"}
               </button>
             </div>
           </form>
