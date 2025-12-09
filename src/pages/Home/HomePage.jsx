@@ -1,6 +1,7 @@
 import BannerSlider from "../../components/home/BannerSlider";
 import LatestBooks from "../../components/home/LatestBooks";
 import WhyChooseUs from "../../components/home/WhyChooseUs";
+import StatisticsSection from "../../components/home/StatisticsSection";
 import CoverageSection from "../../components/home/CoverageSection";
 
 const HomePage = () => {
@@ -14,6 +15,9 @@ const HomePage = () => {
 
       {/* Why Choose Us Section */}
       <WhyChooseUs />
+
+      {/* Statistics Section */}
+      <StatisticsSection />
 
       {/* Coverage Section */}
       <CoverageSection />
