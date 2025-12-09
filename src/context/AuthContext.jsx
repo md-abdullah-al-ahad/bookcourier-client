@@ -77,7 +77,6 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       setAuthError(null);
-      setLoading(true);
 
       const userCredential = await signInWithEmailAndPassword(
         auth,
@@ -85,15 +84,15 @@ export const AuthProvider = ({ children }) => {
         password
       );
 
+      // Don't set loading to false here - let onAuthStateChanged handle it
       return userCredential.user;
     } catch (error) {
       setAuthError(error.message);
+      setLoading(false);
       if (import.meta.env.DEV) {
         console.error("Login error:", error);
       }
       throw error;
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -104,7 +103,6 @@ export const AuthProvider = ({ children }) => {
   const loginWithGoogle = async () => {
     try {
       setAuthError(null);
-      setLoading(true);
 
       const provider = new GoogleAuthProvider();
       const userCredential = await signInWithPopup(auth, provider);
@@ -129,15 +127,15 @@ export const AuthProvider = ({ children }) => {
         }
       }
 
+      // Don't set loading to false here - let onAuthStateChanged handle it
       return userCredential.user;
     } catch (error) {
       setAuthError(error.message);
+      setLoading(false);
       if (import.meta.env.DEV) {
         console.error("Google login error:", error);
       }
       throw error;
-    } finally {
-      setLoading(false);
     }
   };
 
