@@ -93,7 +93,7 @@ const AllBooksPage = () => {
   };
 
   return (
-    <div className="min-h-screen py-8 px-4 bg-base-200">
+    <div className="min-h-screen py-8 px-4 bg-base-200 animate-fade-in">
       <div className="container mx-auto max-w-7xl">
         {/* Page Header */}
         <div className="mb-8">

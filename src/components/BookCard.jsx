@@ -59,7 +59,7 @@ const BookCard = ({ book }) => {
         <div className="card-actions justify-end mt-4">
           <Link
             to={`/books/${bookId}`}
-            className="btn btn-primary btn-sm w-full"
+            className="btn btn-primary btn-sm w-full transition-all duration-300 hover:scale-105 active:scale-95"
           >
             View Details
           </Link>

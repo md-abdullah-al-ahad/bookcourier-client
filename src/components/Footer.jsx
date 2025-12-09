@@ -32,7 +32,7 @@ const Footer = () => {
                 href="https://facebook.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn btn-circle btn-ghost btn-sm hover:bg-primary hover:text-primary-content transition-colors"
+                className="btn btn-circle btn-ghost btn-sm hover:bg-primary hover:text-primary-content transition-all duration-300 hover:scale-110"
                 aria-label="Facebook"
               >
                 <Facebook className="w-5 h-5" />
@@ -41,7 +41,7 @@ const Footer = () => {
                 href="https://twitter.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn btn-circle btn-ghost btn-sm hover:bg-primary hover:text-primary-content transition-colors"
+                className="btn btn-circle btn-ghost btn-sm hover:bg-primary hover:text-primary-content transition-all duration-300 hover:scale-110"
                 aria-label="Twitter"
               >
                 <Twitter className="w-5 h-5" />
@@ -50,7 +50,7 @@ const Footer = () => {
                 href="https://linkedin.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn btn-circle btn-ghost btn-sm hover:bg-primary hover:text-primary-content transition-colors"
+                className="btn btn-circle btn-ghost btn-sm hover:bg-primary hover:text-primary-content transition-all duration-300 hover:scale-110"
                 aria-label="LinkedIn"
               >
                 <Linkedin className="w-5 h-5" />
@@ -59,7 +59,7 @@ const Footer = () => {
                 href="https://instagram.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn btn-circle btn-ghost btn-sm hover:bg-primary hover:text-primary-content transition-colors"
+                className="btn btn-circle btn-ghost btn-sm hover:bg-primary hover:text-primary-content transition-all duration-300 hover:scale-110"
                 aria-label="Instagram"
               >
                 <Instagram className="w-5 h-5" />

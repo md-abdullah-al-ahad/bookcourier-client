@@ -49,7 +49,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 via-base-200 to-secondary/5 py-12 px-4">
+    <div className="min-h-screen flex items-center justify-center px-4 bg-gradient-to-br from-primary/10 via-base-200 to-secondary/10 animate-fade-in">
       <div className="w-full max-w-md">
         {/* Card */}
         <div className="card bg-base-100 shadow-2xl border border-base-300/50">

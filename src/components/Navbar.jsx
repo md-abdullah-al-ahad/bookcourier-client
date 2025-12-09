@@ -53,7 +53,9 @@ const Navbar = () => {
       <li>
         <NavLink
           to="/"
-          className={({ isActive }) => (isActive ? "active font-semibold" : "")}
+          className={({ isActive }) =>
+            isActive ? "active font-semibold" : "transition-colors duration-200"
+          }
           onClick={closeMobileMenu}
         >
           Home
@@ -62,7 +64,9 @@ const Navbar = () => {
       <li>
         <NavLink
           to="/books"
-          className={({ isActive }) => (isActive ? "active font-semibold" : "")}
+          className={({ isActive }) =>
+            isActive ? "active font-semibold" : "transition-colors duration-200"
+          }
           onClick={closeMobileMenu}
         >
           All Books
@@ -73,7 +77,9 @@ const Navbar = () => {
           <NavLink
             to="/dashboard/my-orders"
             className={({ isActive }) =>
-              isActive ? "active font-semibold" : ""
+              isActive
+                ? "active font-semibold"
+                : "transition-colors duration-200"
             }
             onClick={closeMobileMenu}
           >
@@ -112,14 +118,14 @@ const Navbar = () => {
           {/* Navbar End - Actions */}
           <div className="navbar-end flex items-center gap-2">
             {/* Theme Toggle */}
-            <label className="swap swap-rotate btn btn-ghost btn-circle">
+            <label className="swap swap-rotate btn btn-ghost btn-circle transition-all duration-300 hover:scale-110">
               <input
                 type="checkbox"
                 onChange={toggleTheme}
                 checked={theme === "dark"}
               />
-              <Sun className="swap-on w-5 h-5" />
-              <Moon className="swap-off w-5 h-5" />
+              <Sun className="swap-on w-5 h-5 transition-transform" />
+              <Moon className="swap-off w-5 h-5 transition-transform" />
             </label>
 
             {/* User Section or Auth Buttons */}
@@ -171,10 +177,16 @@ const Navbar = () => {
               </div>
             ) : (
               <div className="hidden lg:flex gap-2">
-                <Link to="/login" className="btn btn-ghost btn-sm">
+                <Link
+                  to="/login"
+                  className="btn btn-ghost btn-sm transition-all duration-300 hover:scale-105"
+                >
                   Login
                 </Link>
-                <Link to="/register" className="btn btn-primary btn-sm">
+                <Link
+                  to="/register"
+                  className="btn btn-primary btn-sm transition-all duration-300 hover:scale-105"
+                >
                   Register
                 </Link>
               </div>

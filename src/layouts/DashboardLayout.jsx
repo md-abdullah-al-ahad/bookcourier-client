@@ -180,7 +180,7 @@ const DashboardLayout = () => {
                   <NavLink
                     to={item.path}
                     className={({ isActive }) =>
-                      `flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
+                      `flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 hover:scale-105 ${
                         isActive
                           ? "bg-primary text-primary-content font-semibold"
                           : "hover:bg-base-200"

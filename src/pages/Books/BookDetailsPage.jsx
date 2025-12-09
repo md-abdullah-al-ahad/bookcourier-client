@@ -81,19 +81,25 @@ const BookDetailsPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-base-200 py-8 px-4">
+    <div className="min-h-screen bg-base-200 py-8 px-4 animate-fade-in">
       <div className="container mx-auto max-w-7xl">
         {/* Breadcrumb */}
         <div className="text-sm breadcrumbs mb-6">
           <ul>
             <li>
-              <Link to="/" className="flex items-center gap-1">
+              <Link
+                to="/"
+                className="flex items-center gap-1 transition-colors duration-200 hover:text-primary"
+              >
                 <Home className="w-4 h-4" />
                 Home
               </Link>
             </li>
             <li>
-              <Link to="/books" className="flex items-center gap-1">
+              <Link
+                to="/books"
+                className="flex items-center gap-1 transition-colors duration-200 hover:text-primary"
+              >
                 <BookOpen className="w-4 h-4" />
                 All Books
               </Link>
