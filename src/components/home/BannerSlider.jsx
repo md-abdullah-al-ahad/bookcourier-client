@@ -81,7 +81,7 @@ const BannerSlider = () => {
               className="w-full h-full object-cover"
             />
             <div
-              className={`absolute inset-0 bg-gradient-to-r ${slide.gradient} opacity-80`}
+              className={`absolute inset-0 bg-linear-to-r ${slide.gradient} opacity-80`}
             ></div>
           </div>
 

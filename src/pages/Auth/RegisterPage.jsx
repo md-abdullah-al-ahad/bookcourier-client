@@ -34,7 +34,7 @@ const RegisterPage = () => {
       uppercase: /[A-Z]/.test(pwd),
       lowercase: /[a-z]/.test(pwd),
       number: /\d/.test(pwd),
-      special: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(pwd),
+      special: /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(pwd),
     };
   };
 
@@ -72,7 +72,7 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-secondary/5 via-base-200 to-accent/5 py-12 px-4 animate-fade-in">
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-secondary/5 via-base-200 to-accent/5 py-12 px-4 animate-fade-in">
       <div className="w-full max-w-lg">
         {/* Card */}
         <div className="card bg-base-100 shadow-2xl border border-base-300/50">
@@ -80,11 +80,11 @@ const RegisterPage = () => {
             {/* Header */}
             <div className="text-center mb-8">
               <div className="flex justify-center mb-6">
-                <div className="bg-gradient-to-br from-secondary to-accent text-primary-content p-4 rounded-2xl shadow-lg">
+                <div className="bg-linear-to-br from-secondary to-accent text-primary-content p-4 rounded-2xl shadow-lg">
                   <BookOpen className="w-10 h-10" />
                 </div>
               </div>
-              <h1 className="text-4xl font-bold mb-3 bg-gradient-to-r from-secondary to-accent bg-clip-text text-transparent">
+              <h1 className="text-4xl font-bold mb-3 bg-linear-to-r from-secondary to-accent bg-clip-text text-transparent">
                 Join BookCourier
               </h1>
               <p className="text-base-content/60 text-lg">
@@ -96,12 +96,13 @@ const RegisterPage = () => {
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
               {/* Name Field */}
               <div className="form-control">
-                <label className="label">
+                <label htmlFor="register-name" className="label">
                   <span className="label-text font-semibold text-base">
                     Full Name
                   </span>
                 </label>
                 <input
+                  id="register-name"
                   type="text"
                   placeholder="Enter your full name"
                   className={`input input-bordered w-full transition-all ${
@@ -114,10 +115,16 @@ const RegisterPage = () => {
                       message: "Name must be at least 3 characters",
                     },
                   })}
+                  aria-invalid={errors.name ? "true" : "false"}
+                  aria-describedby={errors.name ? "name-error" : undefined}
                 />
                 {errors.name && (
                   <label className="label">
-                    <span className="label-text-alt text-error font-medium">
+                    <span
+                      id="name-error"
+                      className="label-text-alt text-error font-medium"
+                      role="alert"
+                    >
                       {errors.name.message}
                     </span>
                   </label>
@@ -126,12 +133,13 @@ const RegisterPage = () => {
 
               {/* Email Field */}
               <div className="form-control">
-                <label className="label">
+                <label htmlFor="register-email" className="label">
                   <span className="label-text font-semibold text-base">
                     Email Address
                   </span>
                 </label>
                 <input
+                  id="register-email"
                   type="email"
                   placeholder="Enter your email"
                   className={`input input-bordered w-full transition-all ${
@@ -143,10 +151,16 @@ const RegisterPage = () => {
                       validateEmail(value) ||
                       "Please enter a valid email address",
                   })}
+                  aria-invalid={errors.email ? "true" : "false"}
+                  aria-describedby={errors.email ? "email-error" : undefined}
                 />
                 {errors.email && (
                   <label className="label">
-                    <span className="label-text-alt text-error font-medium">
+                    <span
+                      id="email-error"
+                      className="label-text-alt text-error font-medium"
+                      role="alert"
+                    >
                       {errors.email.message}
                     </span>
                   </label>
@@ -155,13 +169,14 @@ const RegisterPage = () => {
 
               {/* Password Field */}
               <div className="form-control">
-                <label className="label">
+                <label htmlFor="register-password" className="label">
                   <span className="label-text font-semibold text-base">
                     Password
                   </span>
                 </label>
                 <div className="relative">
                   <input
+                    id="register-password"
                     type={showPassword ? "text" : "password"}
                     placeholder="Create a strong password"
                     className={`input input-bordered w-full pr-12 transition-all ${
@@ -178,17 +193,22 @@ const RegisterPage = () => {
                         "Password does not meet all requirements",
                     })}
                     onChange={handlePasswordChange}
+                    aria-invalid={errors.password ? "true" : "false"}
+                    aria-describedby="password-requirements"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-base-content/50 hover:text-primary transition-colors"
                     tabIndex={-1}
+                    aria-label={
+                      showPassword ? "Hide password" : "Show password"
+                    }
                   >
                     {showPassword ? (
-                      <EyeOff className="w-5 h-5" />
+                      <EyeOff className="w-5 h-5" aria-hidden="true" />
                     ) : (
-                      <Eye className="w-5 h-5" />
+                      <Eye className="w-5 h-5" aria-hidden="true" />
                     )}
                   </button>
                 </div>
@@ -221,7 +241,7 @@ const RegisterPage = () => {
                 )}
 
                 {/* Password Requirements */}
-                <div className="mt-3 space-y-1">
+                <div id="password-requirements" className="mt-3 space-y-1">
                   <p className="text-xs font-semibold text-base-content/70 mb-2">
                     Password must contain:
                   </p>
@@ -234,9 +254,15 @@ const RegisterPage = () => {
                   ].map(({ key, text }) => (
                     <div key={key} className="flex items-center gap-2">
                       {requirements[key] ? (
-                        <Check className="w-4 h-4 text-success" />
+                        <Check
+                          className="w-4 h-4 text-success"
+                          aria-hidden="true"
+                        />
                       ) : (
-                        <X className="w-4 h-4 text-base-content/30" />
+                        <X
+                          className="w-4 h-4 text-base-content/30"
+                          aria-hidden="true"
+                        />
                       )}
                       <span
                         className={`text-xs ${
@@ -262,12 +288,13 @@ const RegisterPage = () => {
 
               {/* Photo URL Field */}
               <div className="form-control">
-                <label className="label">
+                <label htmlFor="register-photoURL" className="label">
                   <span className="label-text font-semibold text-base">
                     Photo URL (Optional)
                   </span>
                 </label>
                 <input
+                  id="register-photoURL"
                   type="url"
                   placeholder="Enter your profile photo URL"
                   className={`input input-bordered w-full transition-all ${
@@ -279,10 +306,18 @@ const RegisterPage = () => {
                       message: "Please enter a valid URL",
                     },
                   })}
+                  aria-invalid={errors.photoURL ? "true" : "false"}
+                  aria-describedby={
+                    errors.photoURL ? "photoURL-error" : undefined
+                  }
                 />
                 {errors.photoURL && (
                   <label className="label">
-                    <span className="label-text-alt text-error font-medium">
+                    <span
+                      id="photoURL-error"
+                      className="label-text-alt text-error font-medium"
+                      role="alert"
+                    >
                       {errors.photoURL.message}
                     </span>
                   </label>
@@ -296,6 +331,11 @@ const RegisterPage = () => {
                   isSubmitting ? "loading" : ""
                 }`}
                 disabled={isSubmitting}
+                aria-label={
+                  isSubmitting
+                    ? "Creating account, please wait"
+                    : "Create your account"
+                }
               >
                 {isSubmitting ? "Creating Account..." : "Register"}
               </button>

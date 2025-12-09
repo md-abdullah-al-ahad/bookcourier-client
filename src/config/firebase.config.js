@@ -40,10 +40,4 @@ const app = initializeApp(firebaseConfig);
 // Initialize Firebase Authentication and get a reference to the service
 const auth = getAuth(app);
 
-// Log initialization in development
-if (import.meta.env.DEV) {
-  console.log("✅ Firebase initialized successfully");
-  console.log("📱 Project ID:", firebaseConfig.projectId);
-}
-
 export { auth, app };

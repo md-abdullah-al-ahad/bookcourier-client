@@ -91,10 +91,11 @@ const Navbar = () => {
   );
 
   return (
-    <div
+    <nav
       className={`navbar bg-base-100 sticky top-0 z-50 transition-shadow ${
         isScrolled ? "shadow-md" : ""
       }`}
+      aria-label="Main navigation"
     >
       {/* Mobile Menu Drawer */}
       <div className="drawer drawer-end lg:hidden">
@@ -118,11 +119,19 @@ const Navbar = () => {
           {/* Navbar End - Actions */}
           <div className="navbar-end flex items-center gap-2">
             {/* Theme Toggle */}
-            <label className="swap swap-rotate btn btn-ghost btn-circle transition-all duration-300 hover:scale-110">
+            <label
+              className="swap swap-rotate btn btn-ghost btn-circle transition-all duration-300 hover:scale-110"
+              aria-label="Toggle theme"
+            >
               <input
                 type="checkbox"
                 onChange={toggleTheme}
                 checked={theme === "dark"}
+                aria-label={
+                  theme === "dark"
+                    ? "Switch to light mode"
+                    : "Switch to dark mode"
+                }
               />
               <Sun className="swap-on w-5 h-5 transition-transform" />
               <Moon className="swap-off w-5 h-5 transition-transform" />
@@ -131,17 +140,22 @@ const Navbar = () => {
             {/* User Section or Auth Buttons */}
             {user ? (
               <div className="dropdown dropdown-end">
-                <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
+                <label
+                  tabIndex={0}
+                  className="btn btn-ghost btn-circle avatar"
+                  aria-label="User menu"
+                >
                   <div className="w-10 rounded-full">
                     <img
                       src={user.photoURL || "https://via.placeholder.com/150"}
-                      alt={user.displayName || "User"}
+                      alt={`${user.displayName || "User"}'s profile picture`}
+                      loading="lazy"
                     />
                   </div>
                 </label>
                 <ul
                   tabIndex={0}
-                  className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow-lg bg-base-200 rounded-box w-52"
+                  className="menu menu-sm dropdown-content mt-3 z-1 p-2 shadow-lg bg-base-200 rounded-box w-52"
                 >
                   <li className="menu-title">
                     <span>{user.displayName || "User"}</span>
@@ -196,6 +210,7 @@ const Navbar = () => {
             <label
               htmlFor="mobile-menu-drawer"
               className="btn btn-ghost btn-circle lg:hidden"
+              aria-label="Open mobile menu"
             >
               <Menu className="w-6 h-6" />
             </label>
@@ -222,6 +237,7 @@ const Navbar = () => {
               <button
                 onClick={closeMobileMenu}
                 className="btn btn-ghost btn-circle btn-sm"
+                aria-label="Close mobile menu"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -284,17 +300,22 @@ const Navbar = () => {
           {/* User Section or Auth Buttons */}
           {user ? (
             <div className="dropdown dropdown-end">
-              <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
+              <label
+                tabIndex={0}
+                className="btn btn-ghost btn-circle avatar"
+                aria-label="User menu"
+              >
                 <div className="w-10 rounded-full">
                   <img
                     src={user.photoURL || "https://via.placeholder.com/150"}
-                    alt={user.displayName || "User"}
+                    alt={`${user.displayName || "User"}'s profile picture`}
+                    loading="lazy"
                   />
                 </div>
               </label>
               <ul
                 tabIndex={0}
-                className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow-lg bg-base-200 rounded-box w-52"
+                className="menu menu-sm dropdown-content mt-3 z-1 p-2 shadow-lg bg-base-200 rounded-box w-52"
               >
                 <li className="menu-title">
                   <span>{user.displayName || "User"}</span>
@@ -340,7 +361,7 @@ const Navbar = () => {
           )}
         </div>
       </div>
-    </div>
+    </nav>
   );
 };
 

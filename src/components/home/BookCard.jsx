@@ -58,9 +58,7 @@ const BookCard = ({ book }) => {
       {/* Card Body */}
       <div className="card-body p-4">
         {/* Title */}
-        <h3 className="card-title text-lg line-clamp-2 min-h-[3.5rem]">
-          {title}
-        </h3>
+        <h3 className="card-title text-lg line-clamp-2 min-h-14">{title}</h3>
 
         {/* Author */}
         <div className="flex items-center gap-2 text-base-content/70 text-sm mb-2">

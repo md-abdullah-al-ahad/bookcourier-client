@@ -108,7 +108,7 @@ const DashboardLayout = () => {
               </label>
               <ul
                 tabIndex={0}
-                className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+                className="menu menu-sm dropdown-content mt-3 z-1 p-2 shadow bg-base-100 rounded-box w-52"
               >
                 <li>
                   <button onClick={handleLogout} className="text-error">
@@ -134,7 +134,7 @@ const DashboardLayout = () => {
           {/* Logo & Dashboard Heading */}
           <div className="mb-8 px-4">
             <div className="flex items-center gap-3 mb-2">
-              <div className="bg-gradient-to-br from-primary to-secondary text-primary-content p-2 rounded-lg">
+              <div className="bg-linear-to-br from-primary to-secondary text-primary-content p-2 rounded-lg">
                 <BookOpen className="w-6 h-6" />
               </div>
               <div>

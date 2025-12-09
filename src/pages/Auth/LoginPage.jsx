@@ -49,7 +49,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 bg-gradient-to-br from-primary/10 via-base-200 to-secondary/10 animate-fade-in">
+    <div className="min-h-screen flex items-center justify-center px-4 bg-linear-to-br from-primary/10 via-base-200 to-secondary/10 animate-fade-in">
       <div className="w-full max-w-md">
         {/* Card */}
         <div className="card bg-base-100 shadow-2xl border border-base-300/50">
@@ -57,11 +57,11 @@ const LoginPage = () => {
             {/* Header */}
             <div className="text-center mb-8">
               <div className="flex justify-center mb-6">
-                <div className="bg-gradient-to-br from-primary to-secondary text-primary-content p-4 rounded-2xl shadow-lg">
+                <div className="bg-linear-to-br from-primary to-secondary text-primary-content p-4 rounded-2xl shadow-lg">
                   <BookOpen className="w-10 h-10" />
                 </div>
               </div>
-              <h1 className="text-4xl font-bold mb-3 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              <h1 className="text-4xl font-bold mb-3 bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent">
                 Welcome Back
               </h1>
               <p className="text-base-content/60 text-lg">
@@ -73,12 +73,13 @@ const LoginPage = () => {
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
               {/* Email Field */}
               <div className="form-control">
-                <label className="label">
+                <label htmlFor="login-email" className="label">
                   <span className="label-text font-semibold text-base">
                     Email Address
                   </span>
                 </label>
                 <input
+                  id="login-email"
                   type="email"
                   placeholder="Enter your email"
                   className={`input input-bordered w-full transition-all ${
@@ -90,10 +91,16 @@ const LoginPage = () => {
                       validateEmail(value) ||
                       "Please enter a valid email address",
                   })}
+                  aria-invalid={errors.email ? "true" : "false"}
+                  aria-describedby={errors.email ? "email-error" : undefined}
                 />
                 {errors.email && (
                   <label className="label">
-                    <span className="label-text-alt text-error font-medium">
+                    <span
+                      id="email-error"
+                      className="label-text-alt text-error font-medium"
+                      role="alert"
+                    >
                       {errors.email.message}
                     </span>
                   </label>
@@ -102,13 +109,14 @@ const LoginPage = () => {
 
               {/* Password Field */}
               <div className="form-control">
-                <label className="label">
+                <label htmlFor="login-password" className="label">
                   <span className="label-text font-semibold text-base">
                     Password
                   </span>
                 </label>
                 <div className="relative">
                   <input
+                    id="login-password"
                     type={showPassword ? "text" : "password"}
                     placeholder="Enter your password"
                     className={`input input-bordered w-full pr-12 transition-all ${
@@ -121,23 +129,34 @@ const LoginPage = () => {
                         message: "Password must be at least 6 characters",
                       },
                     })}
+                    aria-invalid={errors.password ? "true" : "false"}
+                    aria-describedby={
+                      errors.password ? "password-error" : undefined
+                    }
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-base-content/50 hover:text-primary transition-colors"
                     tabIndex={-1}
+                    aria-label={
+                      showPassword ? "Hide password" : "Show password"
+                    }
                   >
                     {showPassword ? (
-                      <EyeOff className="w-5 h-5" />
+                      <EyeOff className="w-5 h-5" aria-hidden="true" />
                     ) : (
-                      <Eye className="w-5 h-5" />
+                      <Eye className="w-5 h-5" aria-hidden="true" />
                     )}
                   </button>
                 </div>
                 {errors.password && (
                   <label className="label">
-                    <span className="label-text-alt text-error font-medium">
+                    <span
+                      id="password-error"
+                      className="label-text-alt text-error font-medium"
+                      role="alert"
+                    >
                       {errors.password.message}
                     </span>
                   </label>
@@ -161,6 +180,11 @@ const LoginPage = () => {
                   isSubmitting ? "loading" : ""
                 }`}
                 disabled={isSubmitting || isGoogleLoading}
+                aria-label={
+                  isSubmitting
+                    ? "Logging in, please wait"
+                    : "Login to your account"
+                }
               >
                 {isSubmitting ? "Logging in..." : "Login"}
               </button>
@@ -177,6 +201,11 @@ const LoginPage = () => {
                 isGoogleLoading ? "loading" : ""
               }`}
               disabled={isSubmitting || isGoogleLoading}
+              aria-label={
+                isGoogleLoading
+                  ? "Logging in with Google, please wait"
+                  : "Login with Google"
+              }
             >
               {!isGoogleLoading && (
                 <svg className="w-6 h-6" viewBox="0 0 24 24">

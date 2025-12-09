@@ -42,7 +42,7 @@ const ReviewsSection = ({ bookId }) => {
         // Check if user has ordered this book
         const response = await get(`/orders/can-review/${bookId}`);
         setCanReview(response?.canReview || false);
-      } catch (error) {
+      } catch {
         setCanReview(false);
       } finally {
         setCheckingEligibility(false);
@@ -219,11 +219,20 @@ const ReviewsSection = ({ bookId }) => {
                       {review.user?.photoURL ? (
                         <img
                           src={review.user.photoURL}
-                          alt={review.user?.name || "User"}
+                          alt={`${
+                            review.user?.name || "User"
+                          }'s profile picture`}
+                          loading="lazy"
                         />
                       ) : (
-                        <div className="bg-primary text-primary-content flex items-center justify-center w-full h-full">
-                          <UserCircle className="w-8 h-8" />
+                        <div
+                          className="bg-primary text-primary-content flex items-center justify-center w-full h-full"
+                          role="img"
+                          aria-label={`${
+                            review.user?.name || "User"
+                          }'s profile picture`}
+                        >
+                          <UserCircle className="w-8 h-8" aria-hidden="true" />
                         </div>
                       )}
                     </div>

@@ -69,20 +69,27 @@ const OrderModal = ({ isOpen, onClose, book }) => {
   useEffect(() => {
     const handleEscape = (e) => {
       if (e.key === "Escape" && isOpen) {
-        handleClose();
+        reset();
+        onClose();
       }
     };
 
     document.addEventListener("keydown", handleEscape);
     return () => document.removeEventListener("keydown", handleEscape);
-  }, [isOpen]);
+  }, [isOpen, onClose, reset]);
 
   if (!isOpen || !book) return null;
 
   return (
     <>
       {/* Modal Backdrop */}
-      <div className="modal modal-open" onClick={handleClose}>
+      <div
+        className="modal modal-open"
+        onClick={handleClose}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="order-modal-title"
+      >
         {/* Modal Box */}
         <div
           className="modal-box max-w-2xl animate-scale-in"
@@ -91,15 +98,18 @@ const OrderModal = ({ isOpen, onClose, book }) => {
           {/* Modal Header */}
           <div className="flex items-start justify-between mb-6">
             <div>
-              <h3 className="font-bold text-2xl mb-1">Place Order</h3>
+              <h3 id="order-modal-title" className="font-bold text-2xl mb-1">
+                Place Order
+              </h3>
               <p className="text-base-content/70">for {book.name}</p>
             </div>
             <button
               onClick={handleClose}
               className="btn btn-sm btn-circle btn-ghost"
               type="button"
+              aria-label="Close order modal"
             >
-              <X className="w-5 h-5" />
+              <X className="w-5 h-5" aria-hidden="true" />
             </button>
           </div>
 
@@ -107,38 +117,43 @@ const OrderModal = ({ isOpen, onClose, book }) => {
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             {/* Name Input (Readonly) */}
             <div className="form-control">
-              <label className="label">
+              <label htmlFor="order-userName" className="label">
                 <span className="label-text font-medium">Full Name</span>
               </label>
               <input
+                id="order-userName"
                 type="text"
                 className="input input-bordered bg-base-200"
                 {...register("userName")}
                 readOnly
+                aria-readonly="true"
               />
             </div>
 
             {/* Email Input (Readonly) */}
             <div className="form-control">
-              <label className="label">
+              <label htmlFor="order-userEmail" className="label">
                 <span className="label-text font-medium">Email Address</span>
               </label>
               <input
+                id="order-userEmail"
                 type="email"
                 className="input input-bordered bg-base-200"
                 {...register("userEmail")}
                 readOnly
+                aria-readonly="true"
               />
             </div>
 
             {/* Phone Number Input */}
             <div className="form-control">
-              <label className="label">
+              <label htmlFor="order-phoneNumber" className="label">
                 <span className="label-text font-medium">
                   Phone Number <span className="text-error">*</span>
                 </span>
               </label>
               <input
+                id="order-phoneNumber"
                 type="tel"
                 placeholder="01XXXXXXXXX"
                 className={`input input-bordered ${
@@ -150,10 +165,18 @@ const OrderModal = ({ isOpen, onClose, book }) => {
                     validatePhone(value) ||
                     "Please enter a valid Bangladesh phone number",
                 })}
+                aria-invalid={errors.phoneNumber ? "true" : "false"}
+                aria-describedby={
+                  errors.phoneNumber ? "phone-error" : undefined
+                }
               />
               {errors.phoneNumber && (
                 <label className="label">
-                  <span className="label-text-alt text-error">
+                  <span
+                    id="phone-error"
+                    className="label-text-alt text-error"
+                    role="alert"
+                  >
                     {errors.phoneNumber.message}
                   </span>
                 </label>
@@ -162,12 +185,13 @@ const OrderModal = ({ isOpen, onClose, book }) => {
 
             {/* Address Textarea */}
             <div className="form-control">
-              <label className="label">
+              <label htmlFor="order-address" className="label">
                 <span className="label-text font-medium">
                   Delivery Address <span className="text-error">*</span>
                 </span>
               </label>
               <textarea
+                id="order-address"
                 placeholder="Enter your full delivery address with city and postal code"
                 className={`textarea textarea-bordered h-24 ${
                   errors.address ? "textarea-error" : ""
@@ -179,10 +203,16 @@ const OrderModal = ({ isOpen, onClose, book }) => {
                     message: "Address must be at least 10 characters long",
                   },
                 })}
+                aria-invalid={errors.address ? "true" : "false"}
+                aria-describedby={errors.address ? "address-error" : undefined}
               />
               {errors.address && (
                 <label className="label">
-                  <span className="label-text-alt text-error">
+                  <span
+                    id="address-error"
+                    className="label-text-alt text-error"
+                    role="alert"
+                  >
                     {errors.address.message}
                   </span>
                 </label>
@@ -228,6 +258,7 @@ const OrderModal = ({ isOpen, onClose, book }) => {
                 onClick={handleClose}
                 className="btn btn-ghost"
                 disabled={isSubmitting}
+                aria-label="Cancel order"
               >
                 Cancel
               </button>
@@ -235,6 +266,9 @@ const OrderModal = ({ isOpen, onClose, book }) => {
                 type="submit"
                 className={`btn btn-primary ${isSubmitting ? "loading" : ""}`}
                 disabled={isSubmitting}
+                aria-label={
+                  isSubmitting ? "Placing order, please wait" : "Submit order"
+                }
               >
                 {isSubmitting ? "Placing Order..." : "Place Order"}
               </button>

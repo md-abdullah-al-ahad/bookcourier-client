@@ -10,21 +10,14 @@ const THEME_STORAGE_KEY = "bookcourier-theme";
  * Manages theme state and provides theme toggle functionality
  */
 export const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = useState("light");
+  // Initialize theme from localStorage
+  const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
+  const [theme, setTheme] = useState(savedTheme || "light");
 
-  // Initialize theme on mount
+  // Apply theme to document on mount and when theme changes
   useEffect(() => {
-    // Read theme from localStorage
-    const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
-    const initialTheme = savedTheme || "light";
-
-    setTheme(initialTheme);
-    document.documentElement.setAttribute("data-theme", initialTheme);
-
-    if (import.meta.env.DEV) {
-      console.log("🎨 Theme initialized:", initialTheme);
-    }
-  }, []);
+    document.documentElement.setAttribute("data-theme", theme);
+  }, [theme]);
 
   /**
    * Toggle between light and dark themes
@@ -40,10 +33,6 @@ export const ThemeProvider = ({ children }) => {
 
     // Update data-theme attribute
     document.documentElement.setAttribute("data-theme", newTheme);
-
-    if (import.meta.env.DEV) {
-      console.log("🎨 Theme changed to:", newTheme);
-    }
   };
 
   const value = {

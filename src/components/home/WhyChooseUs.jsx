@@ -48,7 +48,7 @@ const WhyChooseUs = () => {
   ];
 
   return (
-    <section className="py-16 px-4 bg-gradient-to-br from-primary/10 to-secondary/10">
+    <section className="py-16 px-4 bg-linear-to-br from-primary/10 to-secondary/10">
       <div className="container mx-auto max-w-7xl">
         {/* Section Header */}
         <div className="text-center mb-12">

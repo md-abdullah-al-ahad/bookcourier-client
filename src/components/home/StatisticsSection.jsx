@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { BookOpen, Users, MapPin, Award } from "lucide-react";
 
 const StatisticsSection = () => {
@@ -11,40 +11,43 @@ const StatisticsSection = () => {
   });
   const sectionRef = useRef(null);
 
-  const statistics = [
-    {
-      id: "books",
-      icon: BookOpen,
-      title: "Books Available",
-      target: 10000,
-      suffix: "+",
-      duration: 2000,
-    },
-    {
-      id: "customers",
-      icon: Users,
-      title: "Happy Customers",
-      target: 5000,
-      suffix: "+",
-      duration: 2000,
-    },
-    {
-      id: "cities",
-      icon: MapPin,
-      title: "Cities Covered",
-      target: 8,
-      suffix: "",
-      duration: 1500,
-    },
-    {
-      id: "years",
-      icon: Award,
-      title: "Years of Service",
-      target: 3,
-      suffix: "+",
-      duration: 1500,
-    },
-  ];
+  const statistics = useMemo(
+    () => [
+      {
+        id: "books",
+        icon: BookOpen,
+        title: "Books Available",
+        target: 10000,
+        suffix: "+",
+        duration: 2000,
+      },
+      {
+        id: "customers",
+        icon: Users,
+        title: "Happy Customers",
+        target: 5000,
+        suffix: "+",
+        duration: 2000,
+      },
+      {
+        id: "cities",
+        icon: MapPin,
+        title: "Cities Covered",
+        target: 8,
+        suffix: "",
+        duration: 1500,
+      },
+      {
+        id: "years",
+        icon: Award,
+        title: "Years of Service",
+        target: 3,
+        suffix: "+",
+        duration: 1500,
+      },
+    ],
+    []
+  );
 
   // Intersection Observer to detect when section is visible
   useEffect(() => {
@@ -57,13 +60,14 @@ const StatisticsSection = () => {
       { threshold: 0.3 }
     );
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
+    const currentRef = sectionRef.current;
+    if (currentRef) {
+      observer.observe(currentRef);
     }
 
     return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
+      if (currentRef) {
+        observer.unobserve(currentRef);
       }
     };
   }, [isVisible]);
@@ -94,7 +98,7 @@ const StatisticsSection = () => {
     return () => {
       timers.forEach((timer) => clearInterval(timer));
     };
-  }, [isVisible]);
+  }, [isVisible, statistics]);
 
   const formatNumber = (num) => {
     if (num >= 1000) {
@@ -106,7 +110,7 @@ const StatisticsSection = () => {
   return (
     <section
       ref={sectionRef}
-      className="py-16 px-4 bg-gradient-to-r from-primary via-secondary to-accent text-primary-content"
+      className="py-16 px-4 bg-linear-to-r from-primary via-secondary to-accent text-primary-content"
     >
       <div className="container mx-auto max-w-7xl">
         <div className="stats stats-vertical md:stats-horizontal shadow-xl w-full bg-base-100 text-base-content">

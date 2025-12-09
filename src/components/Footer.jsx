@@ -120,7 +120,7 @@ const Footer = () => {
             </span>
             <div className="space-y-3">
               <div className="flex items-start gap-3">
-                <Mail className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
+                <Mail className="w-5 h-5 text-primary mt-1 shrink-0" />
                 <div>
                   <p className="text-sm text-base-content/70">Email</p>
                   <a
@@ -132,7 +132,7 @@ const Footer = () => {
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <Phone className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
+                <Phone className="w-5 h-5 text-primary mt-1 shrink-0" />
                 <div>
                   <p className="text-sm text-base-content/70">Phone</p>
                   <a
@@ -144,7 +144,7 @@ const Footer = () => {
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <MapPin className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
+                <MapPin className="w-5 h-5 text-primary mt-1 shrink-0" />
                 <div>
                   <p className="text-sm text-base-content/70">Address</p>
                   <p>Dhaka, Bangladesh</p>
