@@ -22,8 +22,6 @@ const BookDetailsPage = () => {
     error: bookError,
   } = useFetch(`/books/${id}`);
 
-  const book = bookData?.book || bookData;
-
   // Fetch reviews
   const { data: reviewsData, loading: reviewsLoading } = useFetch(
     `/reviews/book/${id}`
@@ -98,21 +96,31 @@ const BookDetailsPage = () => {
     setShowOrderModal(true);
   };
 
-  // Show loading state
-  if (bookLoading) {
+  // Show loading state while fetching
+  if (bookLoading || !bookData) {
     return <PageLoader />;
   }
 
-  // Show error state (book not found) - only show if loading is complete and there's an error or no book
-  if (!bookLoading && (bookError || !book)) {
+  // Extract book after loading is complete
+  const book = bookData?.book || bookData;
+
+  // Show error state only if there's a 404 error
+  if (bookError?.response?.status === 404) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-base-200">
-        <div className="text-center">
+        <div className="text-center animate-fade-in">
+          <div className="mb-6 flex justify-center">
+            <div className="bg-error/10 p-6 rounded-full">
+              <BookOpen className="w-16 h-16 text-error" />
+            </div>
+          </div>
           <h1 className="text-4xl font-bold mb-4">Book Not Found</h1>
-          <p className="text-base-content/70 mb-6">
-            The book you're looking for doesn't exist or has been removed.
+          <p className="text-base-content/70 mb-6 max-w-md mx-auto">
+            The book you're looking for doesn't exist or has been removed from
+            our collection.
           </p>
-          <Link to="/books" className="btn btn-primary">
+          <Link to="/books" className="btn btn-primary gap-2">
+            <BookOpen className="w-5 h-5" />
             Browse All Books
           </Link>
         </div>
@@ -120,7 +128,34 @@ const BookDetailsPage = () => {
     );
   }
 
-  // Don't render the rest if book is not loaded yet
+  // If there's an error but not 404, show generic error
+  if (bookError) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-base-200">
+        <div className="text-center animate-fade-in">
+          <h1 className="text-3xl font-bold mb-4 text-error">
+            Error Loading Book
+          </h1>
+          <p className="text-base-content/70 mb-6">
+            {bookError.message || "Something went wrong"}
+          </p>
+          <div className="flex gap-4 justify-center">
+            <button
+              onClick={() => window.location.reload()}
+              className="btn btn-primary"
+            >
+              Retry
+            </button>
+            <Link to="/books" className="btn btn-outline">
+              Browse Books
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Final safety check - if no book after all checks, show loader
   if (!book) {
     return <PageLoader />;
   }
@@ -158,7 +193,7 @@ const BookDetailsPage = () => {
                 All Books
               </Link>
             </li>
-            <li className="text-base-content/70">{book.name}</li>
+            <li className="text-base-content/70">{book.name || book.title}</li>
           </ul>
         </div>
 
@@ -166,15 +201,20 @@ const BookDetailsPage = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
           {/* Left: Book Image */}
           <div className="flex justify-center lg:justify-start">
-            <div className="card bg-base-100 shadow-xl w-full max-w-md">
+            <div className="card bg-base-100 shadow-xl w-full max-w-md hover:shadow-2xl transition-shadow duration-300">
               <figure className="px-8 pt-8">
                 <img
                   src={
                     book.image ||
+                    book.imageURL ||
                     "https://via.placeholder.com/400x600?text=Book+Cover"
                   }
-                  alt={book.name}
+                  alt={book.name || book.title}
                   className="rounded-lg w-full h-96 object-cover"
+                  onError={(e) => {
+                    e.target.src =
+                      "https://via.placeholder.com/400x600?text=Book+Cover";
+                  }}
                 />
               </figure>
             </div>
@@ -182,10 +222,10 @@ const BookDetailsPage = () => {
 
           {/* Right: Book Information */}
           <div className="flex flex-col justify-center">
-            <div className="card bg-base-100 shadow-xl p-8">
+            <div className="card bg-base-100 shadow-xl p-8 hover:shadow-2xl transition-shadow duration-300">
               {/* Title */}
               <h1 className="text-3xl md:text-4xl font-bold mb-4">
-                {book.name}
+                {book.name || book.title}
               </h1>
 
               {/* Author */}
@@ -234,8 +274,10 @@ const BookDetailsPage = () => {
 
               {/* Librarian */}
               {book.librarian && (
-                <div className="mb-6 text-sm text-base-content/60">
-                  <span>Provided by: </span>
+                <div className="mb-6 p-3 bg-base-200 rounded-lg">
+                  <span className="text-sm text-base-content/60">
+                    Provided by:{" "}
+                  </span>
                   <span className="font-medium">
                     {book.librarian.name || book.librarian.email}
                   </span>
@@ -248,7 +290,7 @@ const BookDetailsPage = () => {
               <div className="flex flex-col sm:flex-row gap-4">
                 <button
                   onClick={handleOrderNow}
-                  className="btn btn-primary btn-lg flex-1"
+                  className="btn btn-primary btn-lg flex-1 gap-2"
                 >
                   <BookOpen className="w-5 h-5" />
                   Order Now
