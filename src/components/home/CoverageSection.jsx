@@ -13,7 +13,7 @@ const CoverageSection = () => {
   ];
 
   return (
-    <section className="py-16 px-4 bg-base-200">
+    <section className="py-16 px-4 bg-gradient-to-br from-accent/10 to-primary/10">
       <div className="container mx-auto max-w-7xl">
         {/* Section Header */}
         <div className="text-center mb-12">

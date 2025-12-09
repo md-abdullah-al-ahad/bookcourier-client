@@ -106,7 +106,7 @@ const StatisticsSection = () => {
   return (
     <section
       ref={sectionRef}
-      className="py-16 px-4 bg-primary text-primary-content"
+      className="py-16 px-4 bg-gradient-to-r from-primary via-secondary to-accent text-primary-content"
     >
       <div className="container mx-auto max-w-7xl">
         <div className="stats stats-vertical md:stats-horizontal shadow-xl w-full bg-base-100 text-base-content">

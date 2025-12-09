@@ -21,7 +21,7 @@ const LatestBooks = () => {
   }, [error]);
 
   return (
-    <section className="py-16 px-4 bg-base-100">
+    <section className="py-16 px-4 bg-base-200">
       <div className="container mx-auto max-w-7xl">
         {/* Section Header */}
         <div className="text-center mb-12">
