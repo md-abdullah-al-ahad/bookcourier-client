@@ -13,6 +13,7 @@ BookCourier is a comprehensive book delivery platform that connects readers with
 ## ✨ Key Features
 
 ### User Features
+
 - 🔐 **Secure Authentication** - Email/password and Google OAuth integration
 - 📚 **Browse & Search Books** - Extensive catalog with real-time search
 - 🔍 **Advanced Filtering** - Filter by category, author, price range, and status
@@ -26,18 +27,21 @@ BookCourier is a comprehensive book delivery platform that connects readers with
 - 💾 **Wishlist** - Save favorite books for later
 
 ### Librarian Features
+
 - ➕ **Add New Books** - Comprehensive book entry form
 - ✏️ **Edit Books** - Update book information and images
 - 📋 **Manage Orders** - View and update order statuses
 - 📈 **Latest Books Section** - Showcase new arrivals
 
 ### Admin Features
+
 - 👥 **User Management** - View all users and manage roles
 - 📚 **Book Management** - Toggle book status and delete books
 - 🔒 **Role-Based Access** - Assign user, librarian, and admin roles
 - 📊 **Complete Overview** - Monitor all system activities
 
 ### Technical Features
+
 - 🎯 **Protected Routes** - Role-based route protection
 - 🚀 **Performance Optimized** - Lazy loading and code splitting
 - ♿ **Accessibility** - WCAG AA compliant with ARIA labels
@@ -52,29 +56,35 @@ BookCourier is a comprehensive book delivery platform that connects readers with
 ## 🛠️ Technologies Used
 
 ### Frontend Framework & Libraries
+
 - **React 19.2.0** - Modern UI library
 - **Vite 7.2.4** - Next-generation build tool
 - **React Router DOM 7.10.1** - Client-side routing
 
 ### Styling & UI
+
 - **TailwindCSS 4.1.17** - Utility-first CSS framework
 - **DaisyUI 5.5.8** - Tailwind CSS component library
 - **Lucide React 0.556.0** - Beautiful icon set
 
 ### Form & Validation
+
 - **React Hook Form 7.68.0** - Performant form management
 - **Custom Validators** - Email, phone, and password validation
 
 ### Authentication & HTTP
+
 - **Firebase 12.6.0** - Authentication and user management
 - **Axios** - HTTP client with interceptors
 
 ### State Management & Utilities
+
 - **React Context API** - Global state management
 - **Custom Hooks** - Reusable logic (useFetch, useDebounce)
 - **React Hot Toast 2.6.0** - Elegant notifications
 
 ### Development Tools
+
 - **ESLint 9.39.1** - Code linting
 - **Vite Plugin React 5.1.1** - Fast Refresh support
 
@@ -89,12 +99,14 @@ Before running this project, ensure you have:
 ## 🚀 Installation
 
 1. **Clone the repository**
+
 ```bash
 git clone https://github.com/md-abdullah-al-ahad/bookcourier-client.git
 cd bookcourier-client
 ```
 
 2. **Install dependencies**
+
 ```bash
 npm install
 ```
@@ -117,6 +129,7 @@ VITE_FIREBASE_APP_ID=your_app_id
 ```
 
 4. **Start the development server**
+
 ```bash
 npm run dev
 ```
@@ -205,6 +218,7 @@ npm run lint
 ## 🔑 User Roles & Access
 
 ### User (Default)
+
 - Browse and search books
 - Place orders
 - Track order status
@@ -212,12 +226,14 @@ npm run lint
 - Manage profile and wishlist
 
 ### Librarian
+
 - All user permissions
 - Add new books
 - Edit existing books
 - Manage orders
 
 ### Admin
+
 - All librarian permissions
 - Manage user roles
 - Delete books
@@ -226,7 +242,7 @@ npm run lint
 
 ## 📸 Screenshots
 
-*[Add screenshots after deployment]*
+_[Add screenshots after deployment]_
 
 - Home page with featured books
 - Book catalog with filters
@@ -240,12 +256,14 @@ npm run lint
 ## 🔐 Default Credentials
 
 **Admin Account:**
+
 ```
 Email: [Create admin user via Firebase Console]
 Password: [Set secure password]
 ```
 
 **Test User:**
+
 ```
 Register a new account or use Google Sign-In
 ```
@@ -295,6 +313,7 @@ Follow the conventional commits specification:
 ```
 
 **Types:**
+
 - `feat`: New feature
 - `fix`: Bug fix
 - `docs`: Documentation changes
@@ -305,6 +324,7 @@ Follow the conventional commits specification:
 - `chore`: Build process or auxiliary tool changes
 
 **Examples:**
+
 ```bash
 git commit -m "feat: Add user authentication with Firebase"
 git commit -m "fix: Resolve private route redirect loop"
@@ -317,6 +337,7 @@ git commit -m "perf: Optimize image loading with lazy loading"
 ## 🐛 Bug Reports
 
 Found a bug? Please open an issue with:
+
 - Clear description
 - Steps to reproduce
 - Expected vs actual behavior
