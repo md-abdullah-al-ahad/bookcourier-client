@@ -1,20 +1,18 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 const MainLayout = () => {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen flex flex-col">
       <Navbar />
 
       {/* Main content */}
-      <main>
+      <main className="flex-grow">
         <Outlet />
       </main>
 
-      {/* Footer will go here */}
-      <footer className="bg-base-200 p-4 text-center mt-8">
-        <p>© 2025 BookCourier. All rights reserved.</p>
-      </footer>
+      <Footer />
     </div>
   );
 };
