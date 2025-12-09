@@ -1,4 +1,4 @@
-import toast from 'react-hot-toast';
+import toast from "react-hot-toast";
 
 /**
  * Show success toast message
@@ -9,16 +9,16 @@ export const showSuccess = (message) => {
   return toast.success(message, {
     duration: 3000,
     style: {
-      background: '#10b981',
-      color: '#ffffff',
-      padding: '16px',
-      borderRadius: '8px',
-      fontWeight: '500'
+      background: "#10b981",
+      color: "#ffffff",
+      padding: "16px",
+      borderRadius: "8px",
+      fontWeight: "500",
     },
     iconTheme: {
-      primary: '#ffffff',
-      secondary: '#10b981'
-    }
+      primary: "#ffffff",
+      secondary: "#10b981",
+    },
   });
 };
 
@@ -31,16 +31,16 @@ export const showError = (message) => {
   return toast.error(message, {
     duration: 4000,
     style: {
-      background: '#ef4444',
-      color: '#ffffff',
-      padding: '16px',
-      borderRadius: '8px',
-      fontWeight: '500'
+      background: "#ef4444",
+      color: "#ffffff",
+      padding: "16px",
+      borderRadius: "8px",
+      fontWeight: "500",
     },
     iconTheme: {
-      primary: '#ffffff',
-      secondary: '#ef4444'
-    }
+      primary: "#ffffff",
+      secondary: "#ef4444",
+    },
   });
 };
 
@@ -52,14 +52,14 @@ export const showError = (message) => {
 export const showInfo = (message) => {
   return toast(message, {
     duration: 3000,
-    icon: 'ℹ️',
+    icon: "ℹ️",
     style: {
-      background: '#3b82f6',
-      color: '#ffffff',
-      padding: '16px',
-      borderRadius: '8px',
-      fontWeight: '500'
-    }
+      background: "#3b82f6",
+      color: "#ffffff",
+      padding: "16px",
+      borderRadius: "8px",
+      fontWeight: "500",
+    },
   });
 };
 
@@ -71,14 +71,14 @@ export const showInfo = (message) => {
 export const showWarning = (message) => {
   return toast(message, {
     duration: 3500,
-    icon: '⚠️',
+    icon: "⚠️",
     style: {
-      background: '#f59e0b',
-      color: '#ffffff',
-      padding: '16px',
-      borderRadius: '8px',
-      fontWeight: '500'
-    }
+      background: "#f59e0b",
+      color: "#ffffff",
+      padding: "16px",
+      borderRadius: "8px",
+      fontWeight: "500",
+    },
   });
 };
 
@@ -90,12 +90,12 @@ export const showWarning = (message) => {
 export const showLoading = (message) => {
   return toast.loading(message, {
     style: {
-      background: '#6b7280',
-      color: '#ffffff',
-      padding: '16px',
-      borderRadius: '8px',
-      fontWeight: '500'
-    }
+      background: "#6b7280",
+      color: "#ffffff",
+      padding: "16px",
+      borderRadius: "8px",
+      fontWeight: "500",
+    },
   });
 };
 
@@ -121,30 +121,30 @@ export const showPromise = (promise, messages) => {
   return toast.promise(
     promise,
     {
-      loading: messages.loading || 'Loading...',
-      success: messages.success || 'Success!',
-      error: messages.error || 'Something went wrong!'
+      loading: messages.loading || "Loading...",
+      success: messages.success || "Success!",
+      error: messages.error || "Something went wrong!",
     },
     {
       style: {
-        padding: '16px',
-        borderRadius: '8px',
-        fontWeight: '500'
+        padding: "16px",
+        borderRadius: "8px",
+        fontWeight: "500",
       },
       success: {
         duration: 3000,
         style: {
-          background: '#10b981',
-          color: '#ffffff'
-        }
+          background: "#10b981",
+          color: "#ffffff",
+        },
       },
       error: {
         duration: 4000,
         style: {
-          background: '#ef4444',
-          color: '#ffffff'
-        }
-      }
+          background: "#ef4444",
+          color: "#ffffff",
+        },
+      },
     }
   );
 };
