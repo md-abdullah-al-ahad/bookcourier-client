@@ -1,11 +1,12 @@
-import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { Heart, User, BookOpen, Home, ChevronRight } from 'lucide-react';
-import useFetch from '../../hooks/useFetch';
-import PageLoader from '../../components/PageLoader';
-import { showSuccess, showError } from '../../utils/toast';
-import { formatCurrency } from '../../utils/formatters';
-import { post } from '../../utils/api';
+import { useState, useEffect } from "react";
+import { useParams, Link } from "react-router-dom";
+import { Heart, User, BookOpen, Home, ChevronRight } from "lucide-react";
+import useFetch from "../../hooks/useFetch";
+import PageLoader from "../../components/PageLoader";
+import OrderModal from "../../components/modals/OrderModal";
+import { showSuccess, showError } from "../../utils/toast";
+import { formatCurrency } from "../../utils/formatters";
+import { post } from "../../utils/api";
 
 const BookDetailsPage = () => {
   const { id } = useParams();
@@ -14,10 +15,16 @@ const BookDetailsPage = () => {
   const [showOrderModal, setShowOrderModal] = useState(false);
 
   // Fetch book details
-  const { data: book, loading: bookLoading, error: bookError } = useFetch(`/books/${id}`);
-  
+  const {
+    data: book,
+    loading: bookLoading,
+    error: bookError,
+  } = useFetch(`/books/${id}`);
+
   // Fetch reviews
-  const { data: reviewsData, loading: reviewsLoading } = useFetch(`/reviews/book/${id}`);
+  const { data: reviewsData, loading: reviewsLoading } = useFetch(
+    `/reviews/book/${id}`
+  );
 
   const reviews = reviewsData?.reviews || [];
 
@@ -25,11 +32,11 @@ const BookDetailsPage = () => {
   const handleAddToWishlist = async () => {
     try {
       setWishlistLoading(true);
-      await post('/wishlist', { bookId: id });
+      await post("/wishlist", { bookId: id });
       setIsInWishlist(true);
-      showSuccess('Added to wishlist successfully!');
+      showSuccess("Added to wishlist successfully!");
     } catch (error) {
-      showError(error.response?.data?.message || 'Failed to add to wishlist');
+      showError(error.response?.data?.message || "Failed to add to wishlist");
     } finally {
       setWishlistLoading(false);
     }
@@ -64,11 +71,11 @@ const BookDetailsPage = () => {
 
   const getStatusBadge = (status) => {
     const statusColors = {
-      published: 'badge-success',
-      draft: 'badge-warning',
-      archived: 'badge-error',
+      published: "badge-success",
+      draft: "badge-warning",
+      archived: "badge-error",
     };
-    return statusColors[status?.toLowerCase()] || 'badge-ghost';
+    return statusColors[status?.toLowerCase()] || "badge-ghost";
   };
 
   return (
@@ -100,7 +107,10 @@ const BookDetailsPage = () => {
             <div className="card bg-base-100 shadow-xl w-full max-w-md">
               <figure className="px-8 pt-8">
                 <img
-                  src={book.image || 'https://via.placeholder.com/400x600?text=Book+Cover'}
+                  src={
+                    book.image ||
+                    "https://via.placeholder.com/400x600?text=Book+Cover"
+                  }
                   alt={book.name}
                   className="rounded-lg w-full h-96 object-cover"
                 />
@@ -112,7 +122,9 @@ const BookDetailsPage = () => {
           <div className="flex flex-col justify-center">
             <div className="card bg-base-100 shadow-xl p-8">
               {/* Title */}
-              <h1 className="text-3xl md:text-4xl font-bold mb-4">{book.name}</h1>
+              <h1 className="text-3xl md:text-4xl font-bold mb-4">
+                {book.name}
+              </h1>
 
               {/* Author */}
               {book.author && (
@@ -131,15 +143,19 @@ const BookDetailsPage = () => {
 
               {/* Status Badge */}
               <div className="mb-4">
-                <span className={`badge ${getStatusBadge(book.status)} badge-lg`}>
-                  {book.status || 'Published'}
+                <span
+                  className={`badge ${getStatusBadge(book.status)} badge-lg`}
+                >
+                  {book.status || "Published"}
                 </span>
               </div>
 
               {/* Category */}
               {book.category && (
                 <div className="mb-4">
-                  <span className="text-sm font-semibold text-base-content/60">Category:</span>
+                  <span className="text-sm font-semibold text-base-content/60">
+                    Category:
+                  </span>
                   <span className="ml-2 text-base">{book.category}</span>
                 </div>
               )}
@@ -148,7 +164,9 @@ const BookDetailsPage = () => {
               {book.description && (
                 <div className="mb-6">
                   <h3 className="text-lg font-semibold mb-2">Description</h3>
-                  <p className="text-base-content/80 leading-relaxed">{book.description}</p>
+                  <p className="text-base-content/80 leading-relaxed">
+                    {book.description}
+                  </p>
                 </div>
               )}
 
@@ -156,7 +174,9 @@ const BookDetailsPage = () => {
               {book.librarian && (
                 <div className="mb-6 text-sm text-base-content/60">
                   <span>Provided by: </span>
-                  <span className="font-medium">{book.librarian.name || book.librarian.email}</span>
+                  <span className="font-medium">
+                    {book.librarian.name || book.librarian.email}
+                  </span>
                 </div>
               )}
 
@@ -174,10 +194,14 @@ const BookDetailsPage = () => {
                 <button
                   onClick={handleAddToWishlist}
                   disabled={isInWishlist || wishlistLoading}
-                  className={`btn btn-outline btn-lg ${isInWishlist ? 'btn-success' : ''}`}
+                  className={`btn btn-outline btn-lg ${
+                    isInWishlist ? "btn-success" : ""
+                  }`}
                 >
-                  <Heart className={`w-5 h-5 ${isInWishlist ? 'fill-current' : ''}`} />
-                  {isInWishlist ? 'In Wishlist' : 'Add to Wishlist'}
+                  <Heart
+                    className={`w-5 h-5 ${isInWishlist ? "fill-current" : ""}`}
+                  />
+                  {isInWishlist ? "In Wishlist" : "Add to Wishlist"}
                 </button>
               </div>
             </div>
@@ -187,7 +211,7 @@ const BookDetailsPage = () => {
         {/* Reviews Section */}
         <div className="card bg-base-100 shadow-xl p-8">
           <h2 className="text-2xl font-bold mb-6">Customer Reviews</h2>
-          
+
           {reviewsLoading ? (
             <div className="flex justify-center py-8">
               <span className="loading loading-spinner loading-lg"></span>
@@ -199,15 +223,24 @@ const BookDetailsPage = () => {
           ) : (
             <div className="space-y-4">
               {reviews.map((review) => (
-                <div key={review._id} className="border-b border-base-300 pb-4 last:border-0">
+                <div
+                  key={review._id}
+                  className="border-b border-base-300 pb-4 last:border-0"
+                >
                   <div className="flex items-start justify-between mb-2">
                     <div>
-                      <p className="font-semibold">{review.user?.name || 'Anonymous'}</p>
+                      <p className="font-semibold">
+                        {review.user?.name || "Anonymous"}
+                      </p>
                       <div className="flex items-center gap-1">
                         {Array.from({ length: 5 }).map((_, i) => (
                           <span
                             key={i}
-                            className={i < review.rating ? 'text-warning' : 'text-base-300'}
+                            className={
+                              i < review.rating
+                                ? "text-warning"
+                                : "text-base-300"
+                            }
                           >
                             ★
                           </span>
@@ -226,23 +259,14 @@ const BookDetailsPage = () => {
         </div>
       </div>
 
-      {/* Order Modal - Placeholder for now */}
-      {showOrderModal && (
-        <div className="modal modal-open">
-          <div className="modal-box">
-            <h3 className="font-bold text-lg mb-4">Order Modal</h3>
-            <p className="mb-4">Order modal will be implemented next.</p>
-            <div className="modal-action">
-              <button onClick={() => setShowOrderModal(false)} className="btn">
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Order Modal */}
+      <OrderModal
+        isOpen={showOrderModal}
+        onClose={() => setShowOrderModal(false)}
+        book={book}
+      />
     </div>
   );
-};
 };
 
 export default BookDetailsPage;
