@@ -4,10 +4,12 @@ import useFetch from "../../../hooks/useFetch";
 import SkeletonTable from "../../../components/SkeletonTable";
 import { showSuccess, showError } from "../../../utils/toast";
 import { patch } from "../../../utils/api";
+import { useAuth } from "../../../context/AuthContext";
 
 const AllUsersPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [updatingUserId, setUpdatingUserId] = useState(null);
+  const { user: currentUser, refreshUser } = useAuth();
 
   const { data: usersData, loading, error, refetch } = useFetch("/users/all");
   const users = usersData?.users || [];
@@ -40,11 +42,45 @@ const AllUsersPage = () => {
 
     try {
       setUpdatingUserId(userId);
+
+      // Find the user being updated to check if it's the current user
+      const userBeingUpdated = users.find((u) => u._id === userId);
+      const isCurrentUser =
+        currentUser?.mongoId === userId ||
+        currentUser?.uid === userId ||
+        currentUser?.email === userBeingUpdated?.email;
+
+      // Debug logging
+      if (import.meta.env.DEV) {
+        console.log("=== Role Update Debug ===");
+        console.log("Updating user ID:", userId);
+        console.log("User being updated:", userBeingUpdated);
+        console.log("Current user mongoId:", currentUser?.mongoId);
+        console.log("Current user uid:", currentUser?.uid);
+        console.log("Current user email:", currentUser?.email);
+        console.log("Is current user?:", isCurrentUser);
+        console.log("========================");
+      }
+
       await patch(`/users/${userId}/role`, { role: newRole });
       showSuccess(`User role updated to ${newRole} successfully`);
-      refetch();
+
+      // Refetch the users list
+      await refetch();
+
+      // If updating current user's role, refresh auth context
+      if (isCurrentUser) {
+        console.log("Refreshing current user role...");
+        await refreshUser();
+
+        // Give a small delay for the state to update
+        setTimeout(() => {
+          console.log("User role after refresh:", currentUser?.role);
+        }, 500);
+      }
     } catch (error) {
       showError(error.response?.data?.message || "Failed to update user role");
+      console.error("Role update error:", error);
     } finally {
       setUpdatingUserId(null);
     }

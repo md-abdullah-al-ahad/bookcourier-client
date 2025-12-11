@@ -11,6 +11,7 @@ import {
 } from "firebase/auth";
 import { auth } from "../config/firebase.config";
 import { get, put } from "../utils/api";
+import SetPasswordModal from "../components/modals/SetPasswordModal";
 
 // Create Auth Context
 const AuthContext = createContext(null);
@@ -23,6 +24,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [authError, setAuthError] = useState(null);
+  const [passwordRequired, setPasswordRequired] = useState(false);
 
   /**
    * Register new user with email and password
@@ -240,13 +242,21 @@ export const AuthProvider = ({ children }) => {
       await firebaseUser.getIdToken(true);
 
       // Fetch user data including role from MongoDB
-      const userData = await get("/users/me");
+      const userData = await get("/users/profile");
+
+      // Check if password is required
+      const needsPassword =
+        userData.user?.passwordRequired || userData.passwordRequired || false;
+      setPasswordRequired(needsPassword);
 
       // Merge Firebase user with MongoDB data
       return {
         ...firebaseUser,
-        role: userData.role || "user",
-        mongoId: userData._id,
+        role: userData.user?.role || userData.role || "user",
+        mongoId: userData.user?._id || userData._id,
+        passwordRequired: needsPassword,
+        hasPassword:
+          userData.user?.hasPassword || userData.hasPassword || false,
       };
     } catch (error) {
       if (import.meta.env.DEV) {
@@ -256,6 +266,8 @@ export const AuthProvider = ({ children }) => {
       return {
         ...firebaseUser,
         role: "user",
+        passwordRequired: false,
+        hasPassword: false,
       };
     }
   };
@@ -276,6 +288,16 @@ export const AuthProvider = ({ children }) => {
         console.error("Error refreshing user:", error);
       }
     }
+  };
+
+  /**
+   * Handle password set completion
+   * Called after user successfully sets their password
+   */
+  const handlePasswordSet = async () => {
+    setPasswordRequired(false);
+    // Refresh user data to get updated hasPassword status
+    await refreshUser();
   };
 
   // Monitor auth state changes
@@ -313,6 +335,7 @@ export const AuthProvider = ({ children }) => {
     user,
     loading,
     authError,
+    passwordRequired,
     register,
     login,
     loginWithGoogle,
@@ -322,7 +345,15 @@ export const AuthProvider = ({ children }) => {
     refreshUser,
   };
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={value}>
+      {children}
+      {/* Show mandatory password creation modal */}
+      {passwordRequired && user && (
+        <SetPasswordModal onPasswordSet={handlePasswordSet} />
+      )}
+    </AuthContext.Provider>
+  );
 };
 
 /**
