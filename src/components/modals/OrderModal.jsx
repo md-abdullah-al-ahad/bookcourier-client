@@ -92,7 +92,7 @@ const OrderModal = ({ isOpen, onClose, book }) => {
       >
         {/* Modal Box */}
         <div
-          className="modal-box max-w-2xl animate-scale-in"
+          className="modal-box max-w-2xl max-h-[90vh] overflow-y-auto animate-scale-in"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Modal Header */}
