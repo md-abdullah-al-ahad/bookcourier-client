@@ -15,6 +15,7 @@ const BookDetailsPage = () => {
   const [wishlistLoading, setWishlistLoading] = useState(false);
   const [showOrderModal, setShowOrderModal] = useState(false);
   const [checkingWishlist, setCheckingWishlist] = useState(true);
+  const [imageError, setImageError] = useState(false);
 
   // Fetch book details
   const {
@@ -95,9 +96,12 @@ const BookDetailsPage = () => {
     return <PageLoader />;
   }
 
-  // Extract book after loading is complete
-  // Handle different response structures: bookData.data[0], bookData.book, or bookData directly
-  const book = bookData?.data?.[0] || bookData?.book || bookData;
+  // Extract book - axios interceptor returns response.data, which contains the API response
+  // API structure: { success: true, data: {...book} }
+  const book = bookData?.data || bookData;
+
+  // Extract book properties like in BookCard
+  const bookImage = book?.imageURL || book?.image || book?.coverImage;
 
   // Show error state only if there's a 404 error
   if (bookError?.response?.status === 404) {
@@ -198,20 +202,18 @@ const BookDetailsPage = () => {
           <div className="flex justify-center lg:justify-start">
             <div className="card bg-base-100 shadow-xl w-full max-w-md hover:shadow-2xl transition-shadow duration-300">
               <figure className="px-8 pt-8">
-                <img
-                  src={
-                    book.imageURL ||
-                    book.image ||
-                    book.coverImage ||
-                    "https://via.placeholder.com/400x600?text=Book+Cover"
-                  }
-                  alt={book.name || book.title}
-                  className="rounded-lg w-full h-96 object-cover"
-                  onError={(e) => {
-                    e.target.src =
-                      "https://via.placeholder.com/400x600?text=Book+Cover";
-                  }}
-                />
+                {bookImage && !imageError ? (
+                  <img
+                    src={bookImage}
+                    alt={book.name || book.title}
+                    className="rounded-lg w-full h-96 object-cover"
+                    onError={() => setImageError(true)}
+                  />
+                ) : (
+                  <div className="flex items-center justify-center w-full h-96 bg-base-300 rounded-lg">
+                    <BookOpen className="w-20 h-20 text-base-content/20" />
+                  </div>
+                )}
               </figure>
             </div>
           </div>
