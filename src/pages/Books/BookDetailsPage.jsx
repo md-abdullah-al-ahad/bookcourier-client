@@ -96,7 +96,8 @@ const BookDetailsPage = () => {
   }
 
   // Extract book after loading is complete
-  const book = bookData?.book || bookData;
+  // Handle different response structures: bookData.data[0], bookData.book, or bookData directly
+  const book = bookData?.data?.[0] || bookData?.book || bookData;
 
   // Show error state only if there's a 404 error
   if (bookError?.response?.status === 404) {
