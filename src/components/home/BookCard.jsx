@@ -13,8 +13,11 @@ const BookCard = ({ book }) => {
     _id,
     id,
     title,
+    name,
     author,
     coverImage,
+    image,
+    imageURL,
     price,
     category,
     rating,
@@ -22,16 +25,18 @@ const BookCard = ({ book }) => {
   } = book;
 
   const bookId = _id || id;
+  const bookTitle = title || name;
+  const bookImage = imageURL || image || coverImage;
   const isAvailable = availableCopies > 0;
 
   return (
     <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow duration-300">
       {/* Book Cover Image */}
       <figure className="relative h-64 bg-base-300">
-        {coverImage ? (
+        {bookImage ? (
           <img
-            src={coverImage}
-            alt={title}
+            src={bookImage}
+            alt={bookTitle}
             className="w-full h-full object-cover"
           />
         ) : (
@@ -58,7 +63,9 @@ const BookCard = ({ book }) => {
       {/* Card Body */}
       <div className="card-body p-4">
         {/* Title */}
-        <h3 className="card-title text-lg line-clamp-2 min-h-14">{title}</h3>
+        <h3 className="card-title text-lg line-clamp-2 min-h-14">
+          {bookTitle}
+        </h3>
 
         {/* Author */}
         <div className="flex items-center gap-2 text-base-content/70 text-sm mb-2">

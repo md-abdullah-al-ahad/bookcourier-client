@@ -199,8 +199,9 @@ const BookDetailsPage = () => {
               <figure className="px-8 pt-8">
                 <img
                   src={
-                    book.image ||
                     book.imageURL ||
+                    book.image ||
+                    book.coverImage ||
                     "https://via.placeholder.com/400x600?text=Book+Cover"
                   }
                   alt={book.name || book.title}

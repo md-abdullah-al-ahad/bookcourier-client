@@ -11,12 +11,13 @@ import { formatCurrency } from "../utils/formatters";
 const BookCard = ({ book }) => {
   const [imageError, setImageError] = useState(false);
 
-  const { _id, id, name, title, author, image, coverImage, price } = book;
+  const { _id, id, name, title, author, image, coverImage, imageURL, price } =
+    book;
 
-  // Use flexible property names (support both name/title and image/coverImage)
+  // Use flexible property names (support both name/title and image/coverImage/imageURL)
   const bookId = _id || id;
   const bookName = name || title;
-  const bookImage = image || coverImage;
+  const bookImage = imageURL || image || coverImage;
   const bookAuthor = author;
 
   return (

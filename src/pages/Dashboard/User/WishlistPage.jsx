@@ -135,8 +135,13 @@ const WishlistPage = () => {
               {/* Book Image */}
               <figure className="relative overflow-hidden h-64">
                 <img
-                  src={book.imageURL || "/placeholder-book.jpg"}
-                  alt={book.title}
+                  src={
+                    book.imageURL ||
+                    book.image ||
+                    book.coverImage ||
+                    "/placeholder-book.jpg"
+                  }
+                  alt={book.title || book.name}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                   onError={(e) => {
                     e.target.src = "/placeholder-book.jpg";
