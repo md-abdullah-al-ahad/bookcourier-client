@@ -58,15 +58,19 @@ export const AuthProvider = ({ children }) => {
       // Get updated user
       const updatedUser = auth.currentUser;
 
-      return updatedUser;
+      // Fetch user role immediately after registration
+      const userWithRole = await fetchUserRole(updatedUser);
+      setUser(userWithRole);
+      setLoading(false);
+
+      return userWithRole;
     } catch (error) {
       setAuthError(error.message);
+      setLoading(false);
       if (import.meta.env.DEV) {
         console.error("Registration error:", error);
       }
       throw error;
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -86,8 +90,12 @@ export const AuthProvider = ({ children }) => {
         password
       );
 
-      // Don't set loading to false here - let onAuthStateChanged handle it
-      return userCredential.user;
+      // Fetch user role immediately after login
+      const userWithRole = await fetchUserRole(userCredential.user);
+      setUser(userWithRole);
+      setLoading(false);
+
+      return userWithRole;
     } catch (error) {
       setAuthError(error.message);
       setLoading(false);
@@ -131,8 +139,12 @@ export const AuthProvider = ({ children }) => {
         }
       }
 
-      // Don't set loading to false here - let onAuthStateChanged handle it
-      return userCredential.user;
+      // Fetch user role immediately after login
+      const userWithRole = await fetchUserRole(userCredential.user);
+      setUser(userWithRole);
+      setLoading(false);
+
+      return userWithRole;
     } catch (error) {
       setAuthError(error.message);
       setLoading(false);
@@ -242,21 +254,22 @@ export const AuthProvider = ({ children }) => {
       await firebaseUser.getIdToken(true);
 
       // Fetch user data including role from MongoDB
-      const userData = await get("/users/profile");
+      const response = await get("/users/profile");
+
+      // The response structure is: { success: true, message: "...", data: {...user} }
+      const userData = response.data || response;
 
       // Check if password is required
-      const needsPassword =
-        userData.user?.passwordRequired || userData.passwordRequired || false;
+      const needsPassword = userData.passwordRequired || false;
       setPasswordRequired(needsPassword);
 
       // Merge Firebase user with MongoDB data
       return {
         ...firebaseUser,
-        role: userData.user?.role || userData.role || "user",
-        mongoId: userData.user?._id || userData._id,
+        role: userData.role || "user",
+        mongoId: userData._id,
         passwordRequired: needsPassword,
-        hasPassword:
-          userData.user?.hasPassword || userData.hasPassword || false,
+        hasPassword: userData.hasPassword || false,
       };
     } catch (error) {
       if (import.meta.env.DEV) {

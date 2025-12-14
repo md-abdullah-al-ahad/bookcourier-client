@@ -89,7 +89,7 @@ const PaymentPage = () => {
       });
 
       // Update order payment status
-      await patch(`/orders/${orderId}/payment-status`, {
+      await patch(`/orders/${orderId}/payment`, {
         paymentStatus: "paid",
       });
 

@@ -67,6 +67,10 @@ const router = createBrowserRouter([
     ),
     children: [
       {
+        index: true,
+        element: <MyProfilePage />,
+      },
+      {
         path: "my-orders",
         element: <MyOrdersPage />,
       },

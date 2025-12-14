@@ -5,7 +5,6 @@ import BookCard from "../../components/BookCard";
 import SkeletonCard from "../../components/SkeletonCard";
 import useDebounce from "../../hooks/useDebounce";
 import useFetch from "../../hooks/useFetch";
-import { showError } from "../../utils/toast";
 
 const AllBooksPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -22,13 +21,6 @@ const AllBooksPage = () => {
   // Build API URL with query params
   const apiUrl = `/books?search=${debouncedSearch}&sort=${sortBy}&page=${currentPage}&limit=12`;
   const { data, loading, error, refetch } = useFetch(apiUrl);
-
-  // Show error toast if fetch fails
-  useEffect(() => {
-    if (error) {
-      showError(error);
-    }
-  }, [error]);
 
   // Update URL params when filters change
   useEffect(() => {

@@ -14,18 +14,31 @@ const api = axios.create({
 api.interceptors.request.use(
   async (config) => {
     try {
-      // Get current Firebase user and their ID token
-      const user = auth.currentUser;
-      if (user) {
-        const token = await user.getIdToken();
-        config.headers.Authorization = `Bearer ${token}`;
+      // List of public endpoints that don't require authentication
+      const publicEndpoints = ["/books", "/reviews/book/"];
+
+      // Check if this is a public endpoint
+      const isPublicEndpoint = publicEndpoints.some((endpoint) =>
+        config.url?.startsWith(endpoint)
+      );
+
+      // Only add auth token for non-public endpoints
+      if (!isPublicEndpoint) {
+        // Get current Firebase user and their ID token
+        const user = auth.currentUser;
+        if (user) {
+          const token = await user.getIdToken();
+          config.headers.Authorization = `Bearer ${token}`;
+        }
       }
+
       return config;
     } catch (error) {
       if (import.meta.env.DEV) {
         console.error("❌ Error getting auth token:", error);
       }
-      return Promise.reject(error);
+      // Don't reject the request, continue without token for public endpoints
+      return config;
     }
   },
   (error) => {

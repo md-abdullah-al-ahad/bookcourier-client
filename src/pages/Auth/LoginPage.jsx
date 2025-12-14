@@ -26,10 +26,7 @@ const LoginPage = () => {
     try {
       await login(data.email, data.password);
       showSuccess("Login successful! Welcome back.");
-      // Small delay to ensure auth state is updated
-      setTimeout(() => {
-        navigate(from, { replace: true });
-      }, 100);
+      navigate(from, { replace: true });
     } catch (error) {
       showError(
         error.message || "Failed to login. Please check your credentials."
@@ -43,10 +40,7 @@ const LoginPage = () => {
       setIsGoogleLoading(true);
       await loginWithGoogle();
       showSuccess("Login successful! Welcome back.");
-      // Small delay to ensure auth state is updated
-      setTimeout(() => {
-        navigate(from, { replace: true });
-      }, 100);
+      navigate(from, { replace: true });
     } catch (error) {
       showError(error.message || "Failed to login with Google.");
     } finally {

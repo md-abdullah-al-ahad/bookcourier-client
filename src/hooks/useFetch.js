@@ -38,9 +38,10 @@ const useFetch = (url, options = {}) => {
         }
       } catch (err) {
         if (isMountedRef.current) {
-          setError(
-            err.response?.data?.message || err.message || "Something went wrong"
-          );
+          // Extract meaningful error message
+          const errorMessage =
+            err.response?.data?.message || err.message || "Failed to load data";
+          setError(errorMessage);
           setLoading(false);
         }
 

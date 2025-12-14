@@ -4,6 +4,7 @@ import { Heart, User, BookOpen, Home, ChevronRight } from "lucide-react";
 import useFetch from "../../hooks/useFetch";
 import PageLoader from "../../components/PageLoader";
 import OrderModal from "../../components/modals/OrderModal";
+import ReviewsSection from "../../components/ReviewsSection";
 import { showSuccess, showError } from "../../utils/toast";
 import { formatCurrency } from "../../utils/formatters";
 import { post, del, get } from "../../utils/api";
@@ -21,13 +22,6 @@ const BookDetailsPage = () => {
     loading: bookLoading,
     error: bookError,
   } = useFetch(`/books/${id}`);
-
-  // Fetch reviews
-  const { data: reviewsData, loading: reviewsLoading } = useFetch(
-    `/reviews/book/${id}`
-  );
-
-  const reviews = reviewsData?.reviews || [];
 
   // Check if book is in wishlist
   useEffect(() => {
@@ -318,55 +312,8 @@ const BookDetailsPage = () => {
           </div>
         </div>
 
-        {/* Reviews Section */}
-        <div className="card bg-base-100 shadow-xl p-8">
-          <h2 className="text-2xl font-bold mb-6">Customer Reviews</h2>
-
-          {reviewsLoading ? (
-            <div className="flex justify-center py-8">
-              <span className="loading loading-spinner loading-lg"></span>
-            </div>
-          ) : reviews.length === 0 ? (
-            <div className="text-center py-8 text-base-content/60">
-              <p>No reviews yet. Be the first to review this book!</p>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {reviews.map((review) => (
-                <div
-                  key={review._id}
-                  className="border-b border-base-300 pb-4 last:border-0"
-                >
-                  <div className="flex items-start justify-between mb-2">
-                    <div>
-                      <p className="font-semibold">
-                        {review.user?.name || "Anonymous"}
-                      </p>
-                      <div className="flex items-center gap-1">
-                        {Array.from({ length: 5 }).map((_, i) => (
-                          <span
-                            key={i}
-                            className={
-                              i < review.rating
-                                ? "text-warning"
-                                : "text-base-300"
-                            }
-                          >
-                            ★
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                    <span className="text-sm text-base-content/60">
-                      {new Date(review.createdAt).toLocaleDateString()}
-                    </span>
-                  </div>
-                  <p className="text-base-content/80">{review.comment}</p>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
+        {/* Reviews Section with submission form */}
+        <ReviewsSection bookId={id} />
       </div>
 
       {/* Order Modal */}

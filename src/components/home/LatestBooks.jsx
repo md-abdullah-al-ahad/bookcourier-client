@@ -3,8 +3,6 @@ import { ArrowRight } from "lucide-react";
 import useFetch from "../../hooks/useFetch";
 import SkeletonCard from "../SkeletonCard";
 import BookCard from "./BookCard";
-import { showError } from "../../utils/toast";
-import { useEffect } from "react";
 
 const LatestBooks = () => {
   const {
@@ -14,13 +12,6 @@ const LatestBooks = () => {
   } = useFetch("/books?sort=newest&limit=6");
 
   const books = booksData?.books || [];
-
-  // Show error toast if fetch fails
-  useEffect(() => {
-    if (error) {
-      showError(error);
-    }
-  }, [error]);
 
   return (
     <section className="py-16 px-4 bg-base-200">

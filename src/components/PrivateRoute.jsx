@@ -9,7 +9,7 @@ import PageLoader from "./PageLoader";
  * @param {React.ReactNode} props.children - Child components to render if authenticated
  */
 const PrivateRoute = ({ children }) => {
-  const { user, loading } = useAuth();
+  const { user, loading, passwordRequired } = useAuth();
   const location = useLocation();
 
   // Show loader while checking authentication
@@ -22,7 +22,8 @@ const PrivateRoute = ({ children }) => {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  // Render children if authenticated
+  // Allow rendering even if password is required
+  // The SetPasswordModal will handle blocking the UI
   return children;
 };
 
