@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { Heart, User, BookOpen, Home, ChevronRight } from "lucide-react";
 import useFetch from "../../hooks/useFetch";
 import PageLoader from "../../components/PageLoader";
-import OrderModal from "../../components/modals/OrderModal";
+import OrderModal from "../../components/Books/OrderModal";
 import ReviewsSection from "../../components/ReviewsSection";
 import { showSuccess, showError } from "../../utils/toast";
 import { formatCurrency } from "../../utils/formatters";

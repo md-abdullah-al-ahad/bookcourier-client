@@ -86,6 +86,14 @@ const router = createBrowserRouter([
         path: "my-wishlist",
         element: <WishlistPage />,
       },
+      {
+        path: "users",
+        element: (
+          <RoleBasedRoute allowedRoles={["admin"]}>
+            <AllUsersPage />
+          </RoleBasedRoute>
+        ),
+      },
     ],
   },
   {

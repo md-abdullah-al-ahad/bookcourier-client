@@ -8,19 +8,23 @@ import { useAuth } from "../../../context/AuthContext";
 
 const AllUsersPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [roleFilter, setRoleFilter] = useState("all");
   const [updatingUserId, setUpdatingUserId] = useState(null);
   const { user: currentUser, refreshUser } = useAuth();
 
   const { data: usersData, loading, error, refetch } = useFetch("/users/all");
   const users = usersData?.users || [];
 
-  // Filter users by search term
+  // Filter users by search term and role
   const filteredUsers = users.filter((user) => {
     const searchLower = searchTerm.toLowerCase();
+    const matchesRole =
+      roleFilter === "all" ||
+      user.role?.toLowerCase() === roleFilter.toLowerCase();
     return (
       user.name?.toLowerCase().includes(searchLower) ||
       user.email?.toLowerCase().includes(searchLower)
-    );
+    ) && matchesRole;
   });
 
   // Get role badge class
@@ -142,8 +146,8 @@ const AllUsersPage = () => {
       </div>
 
       {/* Search Section */}
-      <div className="mb-6">
-        <div className="form-control max-w-md">
+      <div className="mb-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="form-control">
           <label className="input input-bordered flex items-center gap-2">
             <Search className="w-5 h-5 opacity-70" />
             <input
@@ -153,6 +157,21 @@ const AllUsersPage = () => {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
+          </label>
+        </div>
+        <div className="form-control">
+          <label className="input input-bordered flex items-center gap-2">
+            <UserCog className="w-5 h-5 opacity-70" />
+            <select
+              className="grow bg-transparent"
+              value={roleFilter}
+              onChange={(e) => setRoleFilter(e.target.value)}
+            >
+              <option value="all">All roles</option>
+              <option value="user">User</option>
+              <option value="librarian">Librarian</option>
+              <option value="admin">Admin</option>
+            </select>
           </label>
         </div>
       </div>
@@ -209,6 +228,18 @@ const AllUsersPage = () => {
                 {/* Actions */}
                 <td>
                   <div className="flex gap-2">
+                    <button
+                      onClick={() => handleRoleChange(user._id, "user")}
+                      className={`btn btn-sm btn-ghost border ${
+                        updatingUserId === user._id ? "loading" : ""
+                      }`}
+                      disabled={
+                        user.role?.toLowerCase() === "user" ||
+                        updatingUserId === user._id
+                      }
+                    >
+                      {updatingUserId === user._id ? "" : "Make User"}
+                    </button>
                     <button
                       onClick={() => handleRoleChange(user._id, "librarian")}
                       className={`btn btn-sm btn-primary ${
@@ -286,6 +317,18 @@ const AllUsersPage = () => {
 
               {/* Actions */}
               <div className="space-y-2">
+                <button
+                  onClick={() => handleRoleChange(user._id, "user")}
+                  className={`btn btn-sm btn-ghost btn-block border ${
+                    updatingUserId === user._id ? "loading" : ""
+                  }`}
+                  disabled={
+                    user.role?.toLowerCase() === "user" ||
+                    updatingUserId === user._id
+                  }
+                >
+                  {updatingUserId === user._id ? "" : "Make User"}
+                </button>
                 <button
                   onClick={() => handleRoleChange(user._id, "librarian")}
                   className={`btn btn-sm btn-primary btn-block ${
