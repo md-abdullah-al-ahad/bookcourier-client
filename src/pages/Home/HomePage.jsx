@@ -4,6 +4,8 @@ import WhyChooseUs from "../../components/home/WhyChooseUs";
 import CoverageSection from "../../components/home/CoverageSection";
 import StatisticsSection from "../../components/home/StatisticsSection";
 import Testimonials from "../../components/home/Testimonials";
+import ReadingJourney from "../../components/home/ReadingJourney";
+import CuratedCollections from "../../components/home/CuratedCollections";
 
 /**
  * HomePage Component
@@ -18,8 +20,14 @@ const HomePage = () => {
       {/* Latest Books Section */}
       <LatestBooks />
 
+      {/* Animated Journey Section */}
+      <ReadingJourney />
+
       {/* Why Choose Us Section */}
       <WhyChooseUs />
+
+      {/* Curated Collections Section */}
+      <CuratedCollections />
 
       {/* Coverage Section */}
       <CoverageSection />
