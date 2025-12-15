@@ -12,6 +12,7 @@ import AllBooksPage from "../pages/Books/AllBooksPage";
 import BookDetailsPage from "../pages/Books/BookDetailsPage";
 import LoginPage from "../pages/Auth/LoginPage";
 import RegisterPage from "../pages/Auth/RegisterPage";
+import PaymentPage from "../pages/Payment/PaymentPage";
 
 // User Dashboard Pages
 import MyOrdersPage from "../pages/Dashboard/User/MyOrdersPage";
@@ -55,6 +56,14 @@ const router = createBrowserRouter([
       {
         path: "register",
         element: <RegisterPage />,
+      },
+      {
+        path: "payment/:orderId",
+        element: (
+          <PrivateRoute>
+            <PaymentPage />
+          </PrivateRoute>
+        ),
       },
     ],
   },

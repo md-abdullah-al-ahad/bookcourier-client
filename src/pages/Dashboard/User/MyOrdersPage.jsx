@@ -65,6 +65,8 @@ const MyOrdersPage = () => {
     navigate(`/payment/${orderId}`);
   };
 
+  const getOrderDateValue = (order) => order?.orderDate || order?.createdAt;
+
   // Loading state
   if (loading) {
     return (
@@ -149,7 +151,11 @@ const MyOrdersPage = () => {
                 <td>
                   <div className="flex items-center gap-2">
                     <Calendar className="w-4 h-4 text-base-content/60" />
-                    <span>{formatDate(order.createdAt)}</span>
+                    <span>
+                      {getOrderDateValue(order)
+                        ? formatDate(getOrderDateValue(order))
+                        : "N/A"}
+                    </span>
                   </div>
                 </td>
 
@@ -244,7 +250,9 @@ const MyOrdersPage = () => {
                     Order Date
                   </span>
                   <span className="font-medium">
-                    {formatDate(order.createdAt)}
+                    {getOrderDateValue(order)
+                      ? formatDate(getOrderDateValue(order))
+                      : "N/A"}
                   </span>
                 </div>
 
@@ -281,8 +289,7 @@ const MyOrdersPage = () => {
               </div>
 
               {/* Actions */}
-              {(order.orderStatus?.toLowerCase() === "pending" ||
-                order.paymentStatus?.toLowerCase() === "unpaid") && (
+              {order.orderStatus?.toLowerCase() === "pending" && (
                 <>
                   <div className="divider my-2"></div>
                   <div className="card-actions justify-end">

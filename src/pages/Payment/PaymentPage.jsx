@@ -20,6 +20,10 @@ const PaymentPage = () => {
   // Fetch order details
   const { data: orderData, loading, error } = useFetch(`/orders/${orderId}`);
   const order = orderData?.order || orderData;
+  const totalAmount = order?.totalAmount ?? order?.book?.price ?? 0;
+  const customerName = order?.userName || order?.customerName;
+  const customerPhone = order?.phoneNumber || order?.customerPhone;
+  const deliveryAddress = order?.address || order?.deliveryAddress;
 
   // Format card number with spaces
   const handleCardNumberChange = (e) => {
@@ -84,7 +88,7 @@ const PaymentPage = () => {
       await post("/payments", {
         orderId,
         paymentId,
-        amount: order.totalPrice,
+        amount: totalAmount,
         paymentMethod: "card",
       });
 
@@ -194,15 +198,15 @@ const PaymentPage = () => {
                 <div className="text-sm space-y-1">
                   <p>
                     <span className="text-base-content/60">Name:</span>{" "}
-                    <span className="font-medium">{order.customerName}</span>
+                    <span className="font-medium">{customerName}</span>
                   </p>
                   <p>
                     <span className="text-base-content/60">Phone:</span>{" "}
-                    <span className="font-medium">{order.customerPhone}</span>
+                    <span className="font-medium">{customerPhone}</span>
                   </p>
                   <p>
                     <span className="text-base-content/60">Address:</span>{" "}
-                    <span className="font-medium">{order.deliveryAddress}</span>
+                    <span className="font-medium">{deliveryAddress}</span>
                   </p>
                 </div>
               </div>
@@ -213,7 +217,7 @@ const PaymentPage = () => {
               <div className="flex justify-between items-center">
                 <span className="text-lg font-semibold">Total Amount</span>
                 <span className="text-2xl font-bold text-primary">
-                  {formatCurrency(order.totalPrice)}
+                  {formatCurrency(totalAmount)}
                 </span>
               </div>
             </div>
@@ -292,7 +296,7 @@ const PaymentPage = () => {
                 >
                   {processing
                     ? "Processing..."
-                    : `Pay ${formatCurrency(order.totalPrice)}`}
+                    : `Pay ${formatCurrency(totalAmount)}`}
                 </button>
               </form>
 
